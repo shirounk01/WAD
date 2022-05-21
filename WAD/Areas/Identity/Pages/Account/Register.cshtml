@@ -1,0 +1,41 @@
+﻿@page
+@model RegisterModel
+@{
+	ViewData["Title"] = "Register";
+}
+<div class="center-div">
+	<h1 class="text-primary">Sign up!</h1>
+	<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+	<form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+		<div class="form-group row">
+			<label class="col-sm-2 col-form-label">Email</label>
+			<div class="col-sm-10">
+				<input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true">
+			</div>
+			<span asp-validation-for="Input.Email" class="text-danger"></span>
+		</div>
+		<div class="form-group row">
+			<label class="col-sm-2 col-form-label">Password</label>
+			<div class="col-sm-10">
+				<input asp-for="Input.Password" class="form-control" autocomplete="new-password" aria-required="true" />
+			</div>
+			<span asp-validation-for="Input.Password" class="text-danger"></span>
+		</div>
+		<div class="form-group row">
+			<label class="col-sm-2 col-form-label">Confirm password</label>
+			<div class="col-sm-10">
+				<input asp-for="Input.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" />
+			</div>
+			<span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+		</div>
+
+		<button type="submit" class="btn btn-primary"><i class="bi bi-check-circle"></i> Submit</button>
+	</form>
+
+	<br>
+	<p class="text-primary font-italic">Already have an account? <a asp-controller="User" asp-action="Login">Log in</a>!</p>
+</div>
+
+@section Scripts {
+<partial name="_ValidationScriptsPartial" />
+}

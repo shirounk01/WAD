@@ -1,0 +1,43 @@
+﻿@using WAD.ViewModels
+@model Reviews
+@{
+	ViewData["Title"] = "Review";
+}
+
+<div class="center-div">
+	<h4>@Html.DisplayFor(item => Model.Hotel.Name)</h4>
+	<hr />
+
+	<form method="post">
+		<div class="d-flex justify-content-between">
+			<h5>Leave a review</h5>
+			<div class="col-sm-1">
+				<input asp-for="Review.Rating" placeholder="⭐" type="number" class="form-contror" min="1" max="5" maxlength="1" />
+			</div>
+		</div>
+		<div class="mx-3 px-3 py-2">
+			<textarea type="text" asp-for="Review.Comment" id="Comment" class="form-control" placeholder="Leave your review here" required></textarea>
+		</div>
+		<button asp-controller="Hotel" asp-action="Review" asp-route-hotelId=@Model.Hotel.HotelId type="submit" class="btn btn-primary mt-1"><i class="bi bi-check-circle"></i> Submit review</button>
+	</form>
+
+	<div class="d-flex justify-content-center"><a href="#" id="showMoreReviews" style="display:block;" class="text-primary text-decoration-none"><i class="bi bi-arrows-expand"></i> Show other reviews <i class="bi bi-arrows-expand"></i></a></div>
+	<div id="reviewSection" style="display:none;">
+		<hr />
+		@if (Model.Posts.Count() == 0)
+		{
+			<div class="text-danger">There are no reviews on this hotel yet. Be the first one!</div>
+		}
+		@if  (Model.Posts.Count()  !=  0)
+		{
+				<h5>What other people said</h5>
+				@foreach (var review in Model.Posts)
+				{
+					<p class="mx-3">@Html.DisplayFor(item=>review.Rating)/5⭐</p>
+					<div class="mx-3 px-3 py-2 border-top border-bottom">@Html.DisplayFor(item=>review.Comment)</div>
+					<p class="nonaccent text-end mx-3">on @Convert.ToDateTime(review.Created).ToString("dd MMMM yyyy")</p>
+				}}
+	</div>
+
+
+</div>

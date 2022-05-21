@@ -1,0 +1,63 @@
+﻿@model WAD.Models.Flight
+
+<!DOCTYPE html>
+
+@{
+	ViewData["Title"] = "Create flight";
+}
+
+
+<div class="row center-div">
+	<h4>Flight</h4>
+	<hr />
+	<div class="col-md-4">
+		<form asp-action="Create" method="post">
+			<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+			<div class="form-group">
+				<label asp-for="DepartureTime" class="control-label"></label>
+				<input asp-for="DepartureTime" class="form-control" />
+				<span asp-validation-for="DepartureTime" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="ArrivalTime" class="control-label"></label>
+				<input asp-for="ArrivalTime" class="form-control" />
+				<span asp-validation-for="ArrivalTime" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="DepartureCity" class="control-label"></label>
+				<input asp-for="DepartureCity" class="form-control" />
+				<span asp-validation-for="DepartureCity" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="DepartureAirport" class="control-label"></label>
+				<input asp-for="DepartureAirport" class="form-control" />
+				<span asp-validation-for="DepartureAirport" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="ArrivalCity" class="control-label"></label>
+				<input asp-for="ArrivalCity" class="form-control" />
+				<span asp-validation-for="ArrivalCity" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="ArrivalAirport" class="control-label"></label>
+				<input asp-for="ArrivalAirport" class="form-control" />
+				<span asp-validation-for="ArrivalAirport" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<label asp-for="Price" class="control-label"></label>
+				<input asp-for="Price" class="form-control" />
+				<span asp-validation-for="Price" class="text-danger"></span>
+			</div>
+			<div class="form-group">
+				<input type="submit" value="Create" class="btn btn-primary" />
+			</div>
+		</form>
+	</div>
+</div>
+
+
+@section Scripts {
+    @{
+	await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
+}

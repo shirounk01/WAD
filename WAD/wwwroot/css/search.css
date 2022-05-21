@@ -1,0 +1,53 @@
+.filter-div {
+    display: inline-block;
+    border: solid 1px gray;
+    border-radius: 15px 0px 0px 15px;
+    border-right-style: none;
+    padding: 20px;
+    height: fit-content;
+}
+
+.result-div {
+    display: inline-block;
+    border: solid 1px gray;
+    padding: 20px;
+    min-height: auto;
+}
+
+input[type=number] {
+    -moz-appearance: textfield;
+}
+
+.time-interval {
+    font-weight: 600;
+    font-size: larger;
+}
+
+.price {
+    font-weight: 600;
+    font-size: xx-large;
+}
+
+.start-10 {
+    left: 10px;
+}
+
+.bottom-10 {
+    bottom: 10px;
+}
+
+.end-10 {
+    right: 10px;
+}
+
+.top-10{
+    top:10px;
+}
+
+@media only screen and (max-width: 767px) {
+    .result-div, .filter-div {
+        position: relative;
+        width: 100%;
+        margin-top: 10px;
+    }
+}

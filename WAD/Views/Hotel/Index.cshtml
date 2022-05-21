@@ -1,0 +1,69 @@
+﻿@model IEnumerable<Hotel>
+
+@{
+	ViewData["Title"] = "Hotels";
+}
+
+<div class="d-flex justify-content-center center-div flex-wrap border-0 p-0">
+	<form class="col-md-4 filter-div bg-light">
+		<h4>Sort by</h4>
+		<h6>Price</h6>
+		<div class="form-group">
+			<select name="sort" asp-items="Html.GetEnumSelectList<Sort>()" class="form-select">
+			</select>
+		</div>
+		<h4>Filter by</h4>
+		<h6>Price range</h6>
+		<div class="d-flex inline-block">
+			<div class="form-group w-100">
+				<input type="number" name="minprice" class="form-control" id="minprice" placeholder="Minimum price">
+			</div>
+			<div class="form-group w-100">
+				<input type="number" name="maxprice" class="form-control" id="maxprice" placeholder="Maximum price">
+			</div>
+		</div>
+		<div class="form-group">
+		</div>
+		<div class="btn-group col-12 mt-4">
+			<button type="submit" value="submit" name="submit" formmethod="post" class="btn btn-outline-primary">
+				<i class="bi bi-funnel"></i>
+				Apply filters
+			</button>
+			<a class="btn btn-outline-danger" asp-controller="Hotel" asp-action="ResetIndex">
+				<i class="bi bi-x"></i>
+				Reset filters
+			</a>
+		</div>
+	</form>
+	<div class="col-md-8 result-div">
+		@if (Model.Count() == 0)
+		{
+			<div class="text-danger">There are no such hotels. Please try searching again!</div>
+		}
+		@foreach (var hotel in Model)
+		{
+			<div class="infocard">
+				<div class="infocard-container col-md-4">
+					<img src="img/hotel/hotel1.jpg" class="infocard-img" alt="">
+				</div>
+				<div class="infocard-body col-md">
+					<h4>@Html.DisplayFor(hotelItem => hotel.Name)</h4>
+					<p class="nonaccent">@Html.DisplayFor(hotelItem => hotel.City)</p>
+					<p class="nonaccent">@Html.DisplayFor(hotelItem => hotel.Address)</p>
+					<div class="price price position-absolute bottom-10 start-10">$@Html.DisplayFor(hotelItem => hotel.Price) </div>
+					<div class="position-absolute bottom-10 end-10">
+						<a asp-action="BookHotel" asp-controller="Hotel" asp-route-id=@hotel.HotelId type="submit" class="btn btn-outline-primary">
+							<i class="bi bi-bookmark-check"></i> Book room
+						</a>
+					</div>
+					<div class="position-absolute top-10 end-10">
+						<a asp-action="Review" asp-controller="Hotel" title="Leave a review" asp-route-id=@hotel.HotelId type="submit" class="btn btn-outline-success">
+							<i class="bi bi-chat-left"></i>
+						</a>
+					</div>
+				</div>
+			</div>
+		}
+
+	</div>
+</div>

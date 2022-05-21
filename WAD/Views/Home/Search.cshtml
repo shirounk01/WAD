@@ -1,0 +1,70 @@
+﻿@using WAD.ViewModels
+@model FlightHotel
+
+<div class="parallax">
+	<div class="center-div">
+		<div class="d-flex justify-content-center border-bottom">
+			<div class="option-link">
+				<a href="#" id="flight">Flights</a>
+			</div>
+			<div class="option-link">
+				<a href="#" id="hotel">Hotels</a>
+			</div>
+		</div>
+
+		<div id="searchFlight">
+			<form class="row g-3" method="post">
+				<div class="col-md-3 form-group">
+					<label asp-for="Flight.DepartureCity" class="form-label">Departure</label>
+					<input asp-for="Flight.DepartureCity" type="text" class="form-control" id="start" placeholder="Current location" required>
+				</div>
+				<div class="col-md-3 form-group">
+					<label asp-for="Flight.ArrivalCity" class="form-label">Arrival</label>
+					<input asp-for="Flight.ArrivalCity" type="text" class="form-control" id="finish" placeholder="Destination" required>
+				</div>
+				<div class="col-md-3 form-group">
+					<label asp-for="Flight.DepartureTime" class="form-label">Departing date</label>
+					<input asp-for="Flight.DepartureTime" type="date" class="form-control" id="departing" min="" required>
+				</div>
+				<div class="col-md-3 form-group">
+					<label asp-for="Flight.ArrivalTime" class="form-label">Returning date</label>
+					<input asp-for="Flight.ArrivalTime" type="date" class="form-control" id="returning" min="" required>
+				</div>
+				<div class="col-12">
+					<button type="submit" id="flight-submit" class="btn btn-outline-primary" name="search" value="flight" asp-controller="Home" asp-action="Index">
+
+						<i class="bi bi-search"></i> Search
+						flights
+
+					</button>
+				</div>
+			</form>
+		</div>
+
+		<div id="searchHotel">
+			<form class="row g-3" method="post">
+				<div class="col-md-6">
+					<label asp-for="Hotel.City" class="form-label">Destination</label>
+					<input asp-for="Hotel.City" class="form-control" id="destination" placeholder="Where are you headed?" required>
+				</div>
+				<div class="col-md-3">
+					<label asp-for="Hotel.OpenDate" class="form-label">Check-in date</label>
+					<input asp-for="Hotel.OpenDate" type="date" class="form-control" id="checkin" min="" required>
+				</div>
+				<div class="col-md-3">
+					<label asp-for="Hotel.CloseDate" class="form-label">Check-out date</label>
+					<input asp-for="Hotel.CloseDate" type="date" class="form-control" id="checkout" min="" required>
+				</div>
+				<div class="col-12">
+					<button type="submit" id="flight-submit" class="btn btn-outline-primary" name="search" value="hotel" asp-controller="Home" asp-action="Index">
+
+						<i class="bi bi-search"></i> Search
+						hotels
+
+					</button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+</div>

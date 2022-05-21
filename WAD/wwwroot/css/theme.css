@@ -1,0 +1,106 @@
+html * {
+    font-family: Arial !important;
+}
+
+body::-webkit-scrollbar {
+    display: none;
+}
+
+p {
+    margin: 0px !important;
+}
+
+.body {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.navbar {
+    border-bottom: 1px solid gray;
+}
+
+.logo {
+    height: 40px;
+}
+
+.center-div {
+    max-width: 1200px;
+    border: 1px solid gray;
+    padding: 20px;
+    margin: 10px auto;
+    border-radius: 15px;
+    background-color: white;
+}
+
+.navbar>span {
+    padding-left: 40vw;
+}
+
+form>.row {
+    margin: 10px 0px 10px 0px;
+}
+
+h4, h6 {
+    margin-top: 10px !important;
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.nonaccent {
+    color: rgb(156, 156, 156);
+    text-decoration: none;
+}
+
+.infocard {
+    margin-bottom: 10px;
+    min-height: 120px;
+    width: 100%;
+    display: flex;
+    position: relative;
+    border-top: 1px solid gray;
+    border-bottom: 1px solid gray;
+    overflow: hidden;
+}
+
+.infocard-container {
+    width: 200px;
+    height: 200px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+}
+
+.infocard-img {
+    object-fit: cover;
+    justify-self: center;
+    width: 100%;
+
+}
+
+.infocard-body {
+    padding: 10px;
+    height: 200px;
+    position: relative;
+}
+
+.option-link {
+    padding: 10px;
+}
+
+.option-link>a:link {
+    text-decoration: none;
+}
+
+@media only screen and (max-width: 767px) {
+    .infocard-container {
+        display: none;
+    }
+
+    .infocard-body {
+        position: initial;
+    }
+}

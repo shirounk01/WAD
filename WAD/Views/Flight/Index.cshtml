@@ -1,0 +1,86 @@
+﻿@model IEnumerable<FlightPack>
+
+
+@{
+	ViewData["Title"] = "Flights";
+	FlightPack pack = Model.FirstOrDefault();
+}
+
+<div class="d-flex justify-content-center center-div flex-wrap border-0 p-0">
+	<form class="col-md-4 filter-div bg-light">
+		<h4>Sort by</h4>
+		<h6>Price</h6>
+		<div class="form-group">
+			<select name="sort" asp-items="Html.GetEnumSelectList<Sort>()" class="form-select">
+			</select>
+		</div>
+		<h4>Filter by</h4>
+		<h6>Price range</h6>
+		<div class="d-flex inline-block">
+			<div class="form-group w-100">
+				<input type="number" name="minprice" class="form-control" id="minprice" placeholder="Minimum price">
+			</div>
+			<div class="form-group w-100">
+				<input type="number" name="maxprice" class="form-control" id="maxprice" placeholder="Maximum price">
+			</div>
+		</div>
+		<h6>Departure time in @Html.DisplayFor(item => Model.FirstOrDefault().FlightGoing.DepartureCity)</h6>
+		<div class="form-group">
+			<select name="DepartureTime" asp-items="@Html.GetEnumSelectList<Time>()" class="form-select">
+			</select>
+		</div>
+		<h6>Departure time in @Html.DisplayFor(item => Model.FirstOrDefault().FlightComing.DepartureCity)</h6>
+		<div class="form-group">
+			<select name="ArrivalTime" asp-items="Html.GetEnumSelectList<Time>()" class="form-select">
+			</select>
+		</div>
+		<div class="form-group">
+		</div>
+		<div class="btn-group col-12 mt-4">
+			<button type="submit" value="submit" name="submit" formmethod="post" class="btn btn-outline-primary">
+				<i class="bi bi-funnel"></i>
+				Apply filters
+			</button>
+			<a class="btn btn-outline-danger" asp-controller="Flight" asp-action="ResetIndex">
+				<i class="bi bi-x"></i>
+				Reset filters
+			</a>
+		</div>
+	</form>
+
+	<div class="col-md-8 result-div">
+		@if (Model.Count() == 0)
+		{
+			<div class="text-danger">There are no such flights. Please try searching again!</div>
+		}
+		@foreach (var flight in Model)
+		{
+			<div class="infocard">
+				<div class="infocard-body col-md">
+					<div class="d-flex justify-content-between">
+						<div>
+							<p class="time-interval">@Convert.ToDateTime(flight.FlightGoing.DepartureTime).ToString("hh:mm tt") - @Convert.ToDateTime(flight.FlightGoing.ArrivalTime).ToString("hh:mm tt")</p>
+							<p class="nonaccent">@Html.DisplayFor(flightItem => flight.FlightGoing.DepartureCity) (@Html.DisplayFor(flightItem => flight.FlightGoing.DepartureAirport)) - @Html.DisplayFor(flightItem => flight.FlightGoing.ArrivalCity) (@Html.DisplayFor(flightItem => flight.FlightGoing.ArrivalAirport))</p>
+							<p class="time-interval">$@Html.DisplayFor(flightItem => flight.FlightGoing.Price)</p>
+						</div>
+						<div>
+							<h2><i class="bi bi-arrow-left-right"></i></h2>
+						</div>
+						<div>
+							<p class="time-interval">@Convert.ToDateTime(flight.FlightComing.DepartureTime).ToString("hh:mm tt") - @Convert.ToDateTime(flight.FlightComing.ArrivalTime).ToString("hh:mm tt")</p>
+							<p class="nonaccent">@Html.DisplayFor(flightItem => flight.FlightComing.DepartureCity) (@Html.DisplayFor(flightItem => flight.FlightComing.DepartureAirport)) - @Html.DisplayFor(flightItem => flight.FlightComing.ArrivalCity) (@Html.DisplayFor(flightItem => flight.FlightComing.ArrivalAirport))</p>
+							<p class="time-interval">$@Html.DisplayFor(flightItem => flight.FlightComing.Price)</p>
+						</div>
+					</div>
+					<div class="price position-absolute bottom-10 start-10">$@Html.DisplayFor(flightItem => flight.Price)</div>
+					<div class="position-absolute bottom-10 end-10">
+						<a asp-action="BookFlight" asp-controller="Flight" asp-route-goingId=@flight.FlightGoing.FlightId asp-route-comingId=@flight.FlightComing.FlightId type="submit" class="btn btn-outline-primary">
+							<i class="bi bi-bookmark-check"></i> Buy tickets
+						</a>
+					</div>
+				</div>
+			</div>
+		}
+	</div>
+
+</div>

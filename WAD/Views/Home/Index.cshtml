@@ -1,0 +1,118 @@
+﻿@model Flight
+
+@{
+	ViewData["Title"] = "Home Page";
+}
+<head>
+	<link rel="stylesheet" href="~/css/index.css" asp-append-version="true" />
+</head>
+@Html.Partial("~/Views/Home/Search.cshtml");
+
+<div class="center-div">
+	<div class="infocard">
+		<div class="infocard-container">
+			<img src="img/main/post1.jpg" class="infocard-img" alt="">
+		</div>
+		<div class="infocard-body col-md">
+			<h4>Zhangye Danxia Geopark, China</h4>
+			<p class="nonaccent">
+				Geology lovers and avid Instagrammers alike will be drawn to the otherworldly
+				hues of the "Rainbow Mountains."
+			</p>
+			<a class="nonaccent fst-italic"
+			   href="https://www.harpersbazaar.com/culture/travel-dining/g7171/most-beautiful-places-in-the-world/"
+			   target="_blank">Source: harpersbazaar.com</a>
+
+		</div>
+	</div>
+	<div class="infocard">
+		<div class="infocard-container">
+			<img src="img/main/post2.jpg" class="infocard-img" alt="">
+		</div>
+		<div class="infocard-body col-md">
+			<h4>Whitehaven Beach, Australia</h4>
+			<p class="nonaccent">
+				Whitehaven Beach is arguably one of the loveliest shores in the world. Part of
+				Australia's Whitsunday Coast, the star attraction is remarkable for its amazing combination of
+				pure silica sands and vivid blue-green waters.
+			</p>
+			<a class="nonaccent fst-italic"
+			   href="https://www.travelandleisure.com/trip-ideas/most-beautiful-places-in-the-world-to-visit"
+			   target="_blank">Source: travelandleisure.com</a>
+
+		</div>
+	</div>
+	<div class="infocard">
+		<div class="infocard-container">
+			<img src="img/main/post3.jpg" class="infocard-img" alt="">
+		</div>
+		<div class="infocard-body col-md">
+			<h4>Sarakiniki Beach, Greece</h4>
+			<p class="nonaccent">
+				Off-radar Milos has some of the best beaches in the Aegean without the buzz of
+				Mykonos or Santorini. Moon-like Sarakiniko is made up of mounds of undulating bone-white,
+				wave-like volcanic rock and forms one of the island’s most mesmerising bays.
+			</p>
+			<a class="nonaccent fst-italic"
+			   href="https://www.cntraveller.com/gallery/most-beautiful-places-in-the-world"
+			   target="_blank">Source: cntraveller.com</a>
+		</div>
+	</div>
+	<div class="infocard">
+		<div class="infocard-container">
+			<img src="img/main/post4.jpg" class="infocard-img" alt="">
+		</div>
+		<div class="infocard-body col-md">
+			<h4>Arashiyama Bamboo Grove, Japan</h4>
+			<p class="nonaccent">
+				Every traveler should experience the ethereal glow and seemingly endless heights of
+				this bamboo grove on the outskirts of Kyoto. The experience even extends beyond the visual realm: In
+				1996, Japan's Ministry of the Environment included the sounds here—wood creaking, leaves rustling—as
+				one of the top 100 Soundscapes of Japan.
+			</p>
+			<a class="nonaccent fst-italic"
+			   href="https://www.cntraveler.com/galleries/2015-11-27/the-50-most-beautiful-places-in-the-world"
+			   target="_blank">Source: cntraveler.com</a>
+		</div>
+	</div>
+	<div class="infocard">
+		<div class="infocard-container">
+			<img src="img/main/post5.jpg" class="infocard-img" alt="">
+		</div>
+		<div class="infocard-body col-md">
+			<h4>Isle of Skye, Scotland</h4>
+			<p class="nonaccent">
+				It is unclear where the name Skye comes from, but some sources, such as
+				the Gazetteer of Scotland, claim it comes from the old Norse word "sky-a," meaning "cloud island,"
+				likely in reference to the fog that often enshrouds the island.
+			</p>
+			<a class="nonaccent fst-italic" href="https://www.livescience.com/most-beautiful-places.html"
+			   target="_blank">Source: livescience.com</a>
+		</div>
+	</div>
+</div>
+
+<div class="footer">
+	<div class="center-div border-0 align-content-center w-50">
+		<div class="w-75 align-content-center m-auto footer-item">
+			<div>
+				<h1><i class="bi bi-search"></i></h1> Are you looking for the best deal? <a class="nav-link d-inline p-0" href="mailto:brand@mail.com">
+					<i class="bi bi-envelope"></i> Mail
+					us
+				</a>
+			</div>
+			<div>
+				<h1><i class="bi bi-bookmark"></i></h1> Check out the best flights and accomodation for you
+			</div>
+			<div>
+				<h1><i class="bi bi-question-square"></i></h1> Are there any unanswered questions? <a class="nav-link d-inline p-0" href="tel:1234"><i class="bi bi-telephone"></i> Contact us</a>
+			</div>
+		</div>
+		<hr>
+		Book n Go, Inc. is not responsible for content on external Web sites. © 2022 Book n Go, Inc. All rights
+		reserved.
+	</div>
+</div>
+
+<a asp-action="Create" asp-controller="Flight" class="btn btn-primary position-fixed end-10 bottom-10">add flight</a>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>

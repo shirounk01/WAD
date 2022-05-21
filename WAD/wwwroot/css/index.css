@@ -1,0 +1,37 @@
+.parallax {
+    overflow: auto;
+    padding: 30px;
+    background-image: url('../img/main/header.jpg');
+    height: 100%;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.footer {
+    background: linear-gradient(to top, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 1)), url(../img/main/footer.jpg);
+    height: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    bottom: 0px;
+    width: 100%;
+    margin-top: 100px;
+    padding: 50px;
+    text-align: center;
+}
+
+.footer-item {
+    display: flex;
+}
+
+#searchHotel {
+    display:none;
+}
+
+@media only screen and (max-width: 767px) {
+    .footer-item {
+        display: block !important;
+    }
+}

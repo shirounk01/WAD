@@ -1,0 +1,20 @@
+﻿@{
+	ViewData["Title"] = "Sign in";
+}
+
+<div class="center-div">
+	<h1 class="text-primary">Log in!</h1>
+	<form>
+		<div class="mb-3">
+			<label class="form-label">Email address</label>
+			<input type="email" id="email" name="email" class="form-control">
+		</div>
+		<div class="mb-3">
+			<label class="form-label">Password</label>
+			<input type="password" id="pw" name="pw" class="form-control">
+		</div>
+		<button type="submit" class="btn btn-primary"><i class="bi bi-check-circle"></i> Submit</button>
+	</form>
+	<br>
+		<p class="text-primary font-italic">Don't have an account? <a asp-controller="User" asp-action="Register">Sign up</a>!</p>
+</div>
