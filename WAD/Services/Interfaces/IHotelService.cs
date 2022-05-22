@@ -7,5 +7,6 @@ namespace WAD.Services.Interfaces
         List<Hotel> GetHotelsByModel(Hotel hotel);
         Hotel FindHotelById(int id);
         List<Hotel> FilterHotels(Filter filter, List<Hotel> hotels);
+        List<Tuple<BookHotel, Hotel>> GetHotelsByReservations(List<BookHotel> bookedHotels);
     }
 }

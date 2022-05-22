@@ -1,17 +1,18 @@
-﻿@{
+﻿@model WAD.ViewModels.History
+
+@{
 	ViewData["Title"] = "Profile";
 }
 
 <div class="center-div">
 	<div class="infocard">
 		<div class="infocard-container col-md">
-			<img src="" class="infocard-img" id="profilePicture">
+			<img src="~/img/profile/img0.jpg" class="infocard-img" id="profilePicture">
 		</div>
 		<div class="infocard-body col-md-8">
-			<h4>Name: X Y Z</h4>
-			<p>Email: example@example.com</p>
-			<p>Number of booked flights: 3</p>
-			<p>Number of booked accommodation: 2</p>
+			<p>Email: @Html.DisplayFor(userEmail => User.Identity.Name)</p>
+			<p>Number of booked flights: @Model.Flights.Count()</p>
+			<p>Number of booked accommodation: @Model.Hotels.Count()</p>
 		</div>
 	</div>
 	<h4>Flights history</h4>
@@ -20,26 +21,20 @@
 			<tr>
 				<th scope="col">From</th>
 				<th scope="col">To</th>
-				<th scope="col">Company</th>
 				<th scope="col">Price</th>
 				<th scope="col">Booking date</th>
 			</tr>
 		</thead>
 		<tbody>
-			<tr>
-				<td scope="row">depLoc</td>
-				<td>arrLoc</td>
-				<td>company</td>
-				<td>$1,000</td>
-				<td>2022-03-20 11:30pm</td>
-			</tr>
-			<tr>
-				<td scope="row">depLoc</td>
-				<td>arrLoc</td>
-				<td>company</td>
-				<td>$1,000</td>
-				<td>2022-03-20 11:30pm</td>
-			</tr>
+			@foreach (var flight in Model.Flights)
+			{
+				<tr>
+					<td scope="row">@Html.DisplayFor(flightItem => flight.Item2.DepartureCity)</td>
+					<td>@Html.DisplayFor(flightItem => flight.Item2.ArrivalCity)</td>
+					<td>$@Html.DisplayFor(flightItem => flight.Item2.Price)</td>
+					<td>@Convert.ToDateTime(flight.Item1.RegistrationDate).ToString("dd MMMM yyyy")</td>
+				</tr>
+			}
 
 		</tbody>
 	</table>
@@ -55,18 +50,16 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr>
-				<td scope="row">hotel name</td>
-				<td>arrLoc</td>
-				<td>$1,000</td>
-				<td>2022-03-20 11:30pm</td>
-			</tr>
-			<tr>
-				<td scope="row">hotel name</td>
-				<td>arrLoc</td>
-				<td>$1,000</td>
-				<td>2022-03-20 11:30pm</td>
-			</tr>
+			@foreach (var hotel in Model.Hotels)
+			{
+				<tr>
+					<td scope="row">@Html.DisplayFor(hotelItem => hotel.Item2.Name)</td>
+					<td>@Html.DisplayFor(hotelItem => hotel.Item2.City)</td>
+					<td>$@Html.DisplayFor(hotelItem => hotel.Item2.Price)</td>
+					<td>@Convert.ToDateTime(hotel.Item1.RegistrationDate).ToString("dd MMMM yyyy")</td>
+				</tr>
+			}
+			
 
 		</tbody>
 	</table>

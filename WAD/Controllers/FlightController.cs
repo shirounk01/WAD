@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using WAD.Models;
 using WAD.Services.Interfaces;
@@ -12,13 +14,15 @@ namespace WAD.Controllers
         private readonly IFlightService _flightService;
         private readonly IFlightPackService _flightPackService;
         private readonly IBookFlightService _bookFlightService;
+        private readonly UserManager<IdentityUser> _userManager;
 
-        public FlightController(ILogger<FlightController> logger, IFlightService flightService, IFlightPackService flightPackService, IBookFlightService bookFlightService)
+        public FlightController(ILogger<FlightController> logger, IFlightService flightService, IFlightPackService flightPackService, IBookFlightService bookFlightService, UserManager<IdentityUser> userManager)
         {
             _logger = logger;
             _flightService = flightService;
             _flightPackService = flightPackService;
             _bookFlightService = bookFlightService;
+            _userManager = userManager;
         }
 
         public IActionResult Index(Flight flight)
@@ -27,7 +31,7 @@ namespace WAD.Controllers
             List<Flight> flightsGoing = _flightService.GetFlightsByModel(reference);
             reference = _flightService.SwapRoute(reference);
             List<Flight> flightsComing = _flightService.GetFlightsByModel(reference);
-            var flightPacks =_flightPackService.GeneratePack(flightsGoing, flightsComing);
+            var flightPacks = _flightPackService.GeneratePack(flightsGoing, flightsComing);
             TempData["FlightPacks"] = JsonConvert.SerializeObject(flightPacks);
             TempData["FlightModel"] = JsonConvert.SerializeObject(flight);
             return View(flightPacks);
@@ -46,17 +50,19 @@ namespace WAD.Controllers
             var flight = JsonConvert.DeserializeObject<Flight>(TempData["FlightModel"].ToString());
             return RedirectToAction("Index", flight);
         }
-
+        [Authorize]
         public IActionResult BookFlight(int goingId, int comingId)
         {
-            _bookFlightService.BookFlights(goingId, comingId);
+            string userGuid = _userManager.GetUserId(HttpContext.User);
+            _bookFlightService.BookFlights(goingId, comingId, userGuid);
             return RedirectToAction("ResetIndex");
         }
-
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
         }
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult Create([FromForm] Flight flight)
         {

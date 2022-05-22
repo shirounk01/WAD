@@ -13,16 +13,14 @@ namespace WAD.Services
             _repo = repo;
         }
 
-        public void AddReview(Review review, int id)
+        public void AddReview(Review review, int id, string userGuid)
         {
             var hotel = _repo.HotelRepository.FindByCondition(item => item.HotelId == id).FirstOrDefault();
-            var user = _repo.UserRepository.FindAll().FirstOrDefault();
             review.Hotel = hotel;
-            review.User = user;
+            review.UserGuid = userGuid;
             review.Created = DateTime.Now;
             _repo.ReviewRepository.Create(review);
             _repo.HotelRepository.Update(hotel);
-            _repo.UserRepository.Update(user);
             _repo.Save();
         }
 

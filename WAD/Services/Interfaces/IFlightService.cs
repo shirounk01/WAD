@@ -10,5 +10,6 @@ namespace WAD.Services.Interfaces
         bool CheckTime(Flight flight, Time time);
         Flight GetFlightById(int id);
         void AddFlights(Flight flight);
+        List<Tuple<BookFlight, Flight>> GetHotelsByReservations(List<BookFlight> bookedFlights);
     }
 }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WAD.Models;
 
@@ -11,9 +12,10 @@ using WAD.Models;
 namespace WAD.Migrations
 {
     [DbContext(typeof(BookNGoContext))]
-    partial class BookNGoContextModelSnapshot : ModelSnapshot
+    [Migration("20220521104035_addedIdentity2")]
+    partial class addedIdentity2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -242,9 +244,14 @@ namespace WAD.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("BookFlightId");
 
                     b.HasIndex("FlightId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("BookFlights");
                 });
@@ -272,13 +279,14 @@ namespace WAD.Migrations
                     b.Property<DateTime>("RegistrationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("UserGuid")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
                     b.HasKey("BookHotelId");
 
                     b.HasIndex("HotelId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("BookHotels");
                 });
@@ -380,15 +388,45 @@ namespace WAD.Migrations
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
-                    b.Property<string>("UserGuid")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
 
                     b.HasKey("ReviewId");
 
                     b.HasIndex("HotelId");
 
+                    b.HasIndex("UserId");
+
                     b.ToTable("Reviews");
+                });
+
+            modelBuilder.Entity("WAD.Models.User", b =>
+                {
+                    b.Property<int>("UserId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("UserId"), 1L, 1);
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -450,6 +488,10 @@ namespace WAD.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("WAD.Models.User", null)
+                        .WithMany("BookedFlight")
+                        .HasForeignKey("UserId");
+
                     b.Navigation("Flight");
                 });
 
@@ -461,7 +503,15 @@ namespace WAD.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("WAD.Models.User", "User")
+                        .WithMany("BookedHotels")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Hotel");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("WAD.Models.Review", b =>
@@ -472,7 +522,15 @@ namespace WAD.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("WAD.Models.User", "User")
+                        .WithMany("Reviews")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Hotel");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("WAD.Models.Flight", b =>
@@ -483,6 +541,15 @@ namespace WAD.Migrations
             modelBuilder.Entity("WAD.Models.Hotel", b =>
                 {
                     b.Navigation("BookingUsers");
+
+                    b.Navigation("Reviews");
+                });
+
+            modelBuilder.Entity("WAD.Models.User", b =>
+                {
+                    b.Navigation("BookedFlight");
+
+                    b.Navigation("BookedHotels");
 
                     b.Navigation("Reviews");
                 });

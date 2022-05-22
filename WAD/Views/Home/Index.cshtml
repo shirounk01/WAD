@@ -114,5 +114,8 @@
 	</div>
 </div>
 
-<a asp-action="Create" asp-controller="Flight" class="btn btn-primary position-fixed end-10 bottom-10">add flight</a>
+@if(User.IsInRole("Admin"))
+{
+	<a asp-action="Create" asp-controller="Flight" class="btn btn-primary position-fixed end-10 bottom-10">add flight</a>
+}
 <script src="~/lib/jquery/dist/jquery.min.js"></script>

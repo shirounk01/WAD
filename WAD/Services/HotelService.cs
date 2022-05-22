@@ -41,5 +41,16 @@ namespace WAD.Services
             var hotels = _repo.HotelRepository.FindByModel(hotel);
             return hotels;
         }
+
+        public List<Tuple<BookHotel, Hotel>> GetHotelsByReservations(List<BookHotel> bookedHotels)
+        {
+            List<Tuple<BookHotel, Hotel>> hotelsHistory = new List<Tuple<BookHotel, Hotel>>();
+            foreach (var hotel in bookedHotels)
+            {
+                var entry = _repo.HotelRepository.FindByCondition(item => item.HotelId == hotel.HotelId).FirstOrDefault();
+                hotelsHistory.Add(Tuple.Create(hotel, entry));
+            }
+            return hotelsHistory;
+        }
     }
 }

@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using WAD.Models;
 using WAD.Services.Interfaces;
@@ -12,14 +14,16 @@ namespace WAD.Controllers
         private readonly IHotelService _hotelService;
         public readonly IBookHotelService _bookHotelService;
         public readonly IReviewService _reviewService;
+		private readonly UserManager<IdentityUser> _userManager;
 
-        public HotelController(ILogger<HomeController> logger, IHotelService hotelService, IBookHotelService bookHotelService, IReviewService reviewService)
+		public HotelController(ILogger<HomeController> logger, IHotelService hotelService, IBookHotelService bookHotelService, IReviewService reviewService, UserManager<IdentityUser> userManager)
         {
             _logger = logger;
             _hotelService = hotelService;
             _bookHotelService = bookHotelService;
             _reviewService = reviewService;
-        }
+			_userManager = userManager;
+		}
 
         public IActionResult Index(Hotel hotel)
         {
@@ -41,10 +45,12 @@ namespace WAD.Controllers
             var hotel = JsonConvert.DeserializeObject<Hotel>(TempData["HotelModel"].ToString());
             return RedirectToAction("Index", hotel);
         }
+        [Authorize]
         public IActionResult BookHotel(int id)
         {
             var hotel = JsonConvert.DeserializeObject<Hotel>(TempData["HotelModel"].ToString());
-            _bookHotelService.BookHotel(id, hotel);
+            string userGuid = _userManager.GetUserId(HttpContext.User);
+            _bookHotelService.BookHotel(id, userGuid, hotel);
             return RedirectToAction("Index", hotel);
         }
 
@@ -56,11 +62,12 @@ namespace WAD.Controllers
 
             return View(viewReviews);
         }
-
         [HttpPost]
+        [Authorize]
         public IActionResult Review([FromForm] Review review, int id)
         {
-            _reviewService.AddReview(review, id);
+            string userGuid = _userManager.GetUserId(HttpContext.User);
+            _reviewService.AddReview(review, id, userGuid);
             return RedirectToAction("Review", id);
         }
     }

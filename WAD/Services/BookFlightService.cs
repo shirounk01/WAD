@@ -15,12 +15,12 @@ namespace WAD.Services
             _flightService = flightService;
         }
 
-        public void BookFlight(User user, Flight flight)
+        public void BookFlight(string userGuid, Flight flight)
         {
             
             BookFlight bookFlight = new BookFlight();
             bookFlight.Flight = flight;
-            bookFlight.User = user;
+            bookFlight.UserGuid = userGuid;
             bookFlight.RegistrationDate = DateTime.Now;
 
             _repo.FlightRepository.Update(flight);
@@ -28,17 +28,22 @@ namespace WAD.Services
 
         }
 
-        public void BookFlights(int goingId, int comingId)
+        public void BookFlights(int goingId, int comingId, string userGuid)
         {
-            User user = _repo.UserRepository.FindAll().FirstOrDefault();
             Flight goingFlight = _flightService.GetFlightById(goingId);
             Flight comingFlight = _flightService.GetFlightById(comingId);
-            BookFlight(user, goingFlight);
-            BookFlight(user, comingFlight);
+            BookFlight(userGuid, goingFlight);
+            BookFlight(userGuid, comingFlight);
 
-            _repo.UserRepository.Update(user);
+            //_repo.UserRepository.Update(user);
 
             _repo.Save();
+        }
+
+        public List<BookFlight> GetReservationsByUserId(string userGuid)
+        {
+            List<BookFlight> flightReservations = _repo.BookFlightRepository.FindByCondition(flight => flight.UserGuid == userGuid).ToList();
+            return flightReservations;
         }
     }
 }

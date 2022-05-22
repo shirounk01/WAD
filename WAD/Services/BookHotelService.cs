@@ -4,7 +4,7 @@ using WAD.Services.Interfaces;
 
 namespace WAD.Services
 {
-    public class BookHotelService:IBookHotelService
+    public class BookHotelService : IBookHotelService
     {
         private IRepositoryWrapper _repo;
         private IHotelService _hotelService;
@@ -15,24 +15,29 @@ namespace WAD.Services
             _hotelService = hotelService;
         }
 
-        public void BookHotel(int id, Hotel reference)
+        public void BookHotel(int id, string userGuid, Hotel reference)
         {
             User user = _repo.UserRepository.FindAll().FirstOrDefault();
             Hotel hotel = _hotelService.FindHotelById(id);
 
             BookHotel bookHotel = new BookHotel();
-            bookHotel.User = user;
-            bookHotel.Hotel= hotel;
+            bookHotel.UserGuid = userGuid;
+            bookHotel.Hotel = hotel;
             bookHotel.RegistrationDate = DateTime.Now;
             bookHotel.CheckInDate = reference.OpenDate;
             bookHotel.CheckOutDate = reference.CloseDate;
-            bookHotel.Price=hotel.Price*((int)(reference.CloseDate-reference.OpenDate).TotalDays);
+            bookHotel.Price = hotel.Price * ((int)(reference.CloseDate - reference.OpenDate).TotalDays);
 
-            _repo.UserRepository.Update(user);
             _repo.HotelRepository.Update(hotel);
             _repo.BookHotelRepository.Create(bookHotel);
 
             _repo.Save();
+        }
+
+        public List<BookHotel> GetReservationsByUserId(string userGuid)
+        {
+            List<BookHotel> hotelReservations = _repo.BookHotelRepository.FindByCondition(hotel => hotel.UserGuid == userGuid).ToList();
+            return hotelReservations;
         }
     }
 }

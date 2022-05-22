@@ -60,6 +60,17 @@ namespace WAD.Services
             return flights;
         }
 
+        public List<Tuple<BookFlight, Flight>> GetHotelsByReservations(List<BookFlight> bookedFlights)
+        {
+            List<Tuple<BookFlight, Flight>> flightsHistory = new List<Tuple<BookFlight, Flight>>();
+            foreach (var flight in bookedFlights)
+            {
+                var entry = _repo.FlightRepository.FindByCondition(item=>item.FlightId == flight.FlightId).FirstOrDefault();
+                flightsHistory.Add(Tuple.Create(flight, entry));
+            }
+            return flightsHistory;
+        }
+
         public Flight SwapRoute(Flight flight)
         {
             var newFlight = flight;
