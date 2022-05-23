@@ -17,7 +17,6 @@ namespace WAD.Services
 
         public void BookHotel(int id, string userGuid, Hotel reference)
         {
-            User user = _repo.UserRepository.FindAll().FirstOrDefault();
             Hotel hotel = _hotelService.FindHotelById(id);
 
             BookHotel bookHotel = new BookHotel();
