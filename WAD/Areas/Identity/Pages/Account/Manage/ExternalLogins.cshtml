@@ -9,7 +9,13 @@
 @if (Model.CurrentLogins?.Count > 0)
 {
     <h3>Registered Logins</h3>
-    <table class="table">
+    <table summary="external-logins" class="table">
+        <thead>
+            <tr>
+                <th>Provider</th>
+                <th>Remove Link</th>
+            </tr>
+        </thead>
         <tbody>
             @foreach (var login in Model.CurrentLogins)
             {

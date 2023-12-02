@@ -11,14 +11,14 @@ namespace WAD.Repositories
        
         public List<Flight> FindByFilter(Filter filter)
         {
-            var result = Context.Flights.AsQueryable();
+            var result = Context.Flights!.AsQueryable();
 
             return result.ToList();
         }
 
         public List<Flight> FindByModel(Flight flight)
         {
-            var result = Context.Flights.AsQueryable();
+            var result = Context.Flights!.AsQueryable();
 
             result = result.Where(item => item.DepartureTime.Date.Equals(flight.DepartureTime.Date) && item.DepartureCity == flight.DepartureCity && item.ArrivalCity == flight.ArrivalCity);
 

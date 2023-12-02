@@ -11,7 +11,7 @@ namespace WAD.Repositories
 
         public List<Hotel> FindByModel(Hotel hotel)
         {
-            var result = Context.Hotels.AsQueryable();
+            var result = Context.Hotels!.AsQueryable();
             result = result.Where(item => item.City == hotel.City);
             return result.ToList();
         }

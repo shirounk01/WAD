@@ -52,6 +52,7 @@ namespace WAD.Areas.Identity.Pages.Account
 
         public void OnGet()
         {
+            /// this method is intentionally left empty
         }
 
         public async Task<IActionResult> OnPostAsync()

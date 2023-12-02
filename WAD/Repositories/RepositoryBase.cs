@@ -9,7 +9,7 @@ namespace WAD.Repositories
     {
         protected BookNGoContext Context { get; set; }
 
-        public RepositoryBase(BookNGoContext locationContext)
+        protected RepositoryBase(BookNGoContext locationContext)
         {
             this.Context = locationContext;
         }

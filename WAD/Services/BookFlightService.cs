@@ -6,8 +6,8 @@ namespace WAD.Services
 {
     public class BookFlightService : IBookFlightService
     {
-        private IRepositoryWrapper _repo;
-        private IFlightService _flightService;
+        private readonly IRepositoryWrapper _repo;
+        private readonly IFlightService _flightService;
 
         public BookFlightService(IRepositoryWrapper repo, IFlightService flightService)
         {
@@ -34,8 +34,6 @@ namespace WAD.Services
             Flight comingFlight = _flightService.GetFlightById(comingId);
             BookFlight(userGuid, goingFlight);
             BookFlight(userGuid, comingFlight);
-
-            //_repo.UserRepository.Update(user);
 
             _repo.Save();
         }

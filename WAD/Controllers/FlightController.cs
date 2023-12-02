@@ -10,15 +10,13 @@ namespace WAD.Controllers
 {
     public class FlightController : Controller
     {
-        private readonly ILogger<FlightController> _logger;
         private readonly IFlightService _flightService;
         private readonly IFlightPackService _flightPackService;
         private readonly IBookFlightService _bookFlightService;
         private readonly UserManager<IdentityUser> _userManager;
 
-        public FlightController(ILogger<FlightController> logger, IFlightService flightService, IFlightPackService flightPackService, IBookFlightService bookFlightService, UserManager<IdentityUser> userManager)
+        public FlightController(IFlightService flightService, IFlightPackService flightPackService, IBookFlightService bookFlightService, UserManager<IdentityUser> userManager)
         {
-            _logger = logger;
             _flightService = flightService;
             _flightPackService = flightPackService;
             _bookFlightService = bookFlightService;
@@ -39,15 +37,15 @@ namespace WAD.Controllers
         [HttpPost]
         public IActionResult Index([FromForm] Filter filter)
         {
-            var flights = JsonConvert.DeserializeObject<List<FlightPack>>(TempData["FlightPacks"].ToString());
-            flights = _flightPackService.FilterFlights(filter, flights);
+            var flights = JsonConvert.DeserializeObject<List<FlightPack>>(TempData["FlightPacks"]!.ToString()!);
+            flights = _flightPackService.FilterFlights(filter, flights!);
             TempData["FlightPacks"] = JsonConvert.SerializeObject(flights);
             return View(flights);
         }
 
         public IActionResult ResetIndex()
         {
-            var flight = JsonConvert.DeserializeObject<Flight>(TempData["FlightModel"].ToString());
+            var flight = JsonConvert.DeserializeObject<Flight>(TempData["FlightModel"]!.ToString()!);
             return RedirectToAction("Index", flight);
         }
         [Authorize]

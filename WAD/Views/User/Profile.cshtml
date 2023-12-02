@@ -7,7 +7,7 @@
 <div class="center-div">
 	<div class="infocard">
 		<div class="infocard-container col-md">
-			<img src="~/img/profile/img0.jpg" class="infocard-img" id="profilePicture">
+			<img alt="profile picture" src="~/img/profile/img0.jpg" class="infocard-img" id="profilePicture">
 		</div>
 		<div class="infocard-body col-md-8">
 			<p>Email: @Html.DisplayFor(userEmail => User.Identity.Name)</p>
@@ -16,7 +16,7 @@
 		</div>
 	</div>
 	<h4>Flights history</h4>
-	<table class="table table-hover table-striped">
+	<table summary="flight-history" class="table table-hover table-striped">
 		<thead>
 			<tr>
 				<th scope="col">From</th>
@@ -29,7 +29,7 @@
 			@foreach (var flight in Model.Flights)
 			{
 				<tr>
-					<td scope="row">@Html.DisplayFor(flightItem => flight.Item2.DepartureCity)</td>
+					<td>@Html.DisplayFor(flightItem => flight.Item2.DepartureCity)</td>
 					<td>@Html.DisplayFor(flightItem => flight.Item2.ArrivalCity)</td>
 					<td>$@Html.DisplayFor(flightItem => flight.Item2.Price)</td>
 					<td>@Convert.ToDateTime(flight.Item1.RegistrationDate).ToString("dd MMMM yyyy")</td>
@@ -40,7 +40,7 @@
 	</table>
 	<hr>
 	<h4>Accommodations history</h4>
-	<table class="table table-hover table-striped">
+	<table summary="accommodations-history" class="table table-hover table-striped">
 		<thead>
 			<tr>
 				<th scope="col">Name</th>
@@ -53,7 +53,7 @@
 			@foreach (var hotel in Model.Hotels)
 			{
 				<tr>
-					<td scope="row">@Html.DisplayFor(hotelItem => hotel.Item2.Name)</td>
+					<td>@Html.DisplayFor(hotelItem => hotel.Item2.Name)</td>
 					<td>@Html.DisplayFor(hotelItem => hotel.Item2.City)</td>
 					<td>$@Html.DisplayFor(hotelItem => hotel.Item2.Price)</td>
 					<td>@Convert.ToDateTime(hotel.Item1.RegistrationDate).ToString("dd MMMM yyyy")</td>

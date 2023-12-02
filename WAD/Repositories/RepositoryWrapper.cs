@@ -5,7 +5,7 @@ namespace WAD.Repositories
 {
     public class RepositoryWrapper : IRepositoryWrapper
     {
-        private BookNGoContext _bookNGoContext;
+        private readonly BookNGoContext _bookNGoContext;
         private IUserRepository? _userRepository;
         private IFlightRepository? _flightRepository;
         private IBookFlightRepository? _bookFlightRepository;

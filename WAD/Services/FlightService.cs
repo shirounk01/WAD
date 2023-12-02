@@ -6,7 +6,7 @@ namespace WAD.Services
 {
     public class FlightService : IFlightService
     {
-        private IRepositoryWrapper _repo;
+        private readonly IRepositoryWrapper _repo;
 
         public FlightService(IRepositoryWrapper repo)
         {
@@ -45,7 +45,7 @@ namespace WAD.Services
         public Flight GetFlightById(int id)
         {
             var flight = _repo.FlightRepository.FindByCondition(item => item.FlightId == id).FirstOrDefault();
-            return flight;
+            return flight!;
         }
 
         public List<Flight> GetFlightsByFilter(Filter filter)
@@ -66,7 +66,7 @@ namespace WAD.Services
             foreach (var flight in bookedFlights)
             {
                 var entry = _repo.FlightRepository.FindByCondition(item=>item.FlightId == flight.FlightId).FirstOrDefault();
-                flightsHistory.Add(Tuple.Create(flight, entry));
+                flightsHistory.Add(Tuple.Create(flight, entry)!);
             }
             return flightsHistory;
         }

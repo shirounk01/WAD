@@ -1,5 +1,5 @@
 html * {
-    font-family: Arial !important;
+    font-family: Arial, sans-serif !important;
 }
 
 body::-webkit-scrollbar {

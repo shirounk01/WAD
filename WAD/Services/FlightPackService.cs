@@ -14,7 +14,7 @@ namespace WAD.Services
 
         public List<FlightPack> FilterFlights(Filter filter, List<FlightPack> flights)
         {
-            var result = flights.Where(item => (filter.DepartureTime == 0 || _flighService.CheckTime(item.FlightGoing, filter.DepartureTime) == true) && (filter.ArrivalTime == 0 || _flighService.CheckTime(item.FlightComing, filter.ArrivalTime) == true));
+            var result = flights.Where(item => (filter.DepartureTime == 0 || _flighService.CheckTime(item.FlightGoing!, filter.DepartureTime)) && (filter.ArrivalTime == 0 || _flighService.CheckTime(item.FlightComing!, filter.ArrivalTime)));
 
             result = result.Where(item => (filter.MinPrice == 0 || item.Price >= filter.MinPrice) && (filter.MaxPrice == 0 || item.Price <= filter.MaxPrice));
             if (filter.sort != 0)

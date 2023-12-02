@@ -7,13 +7,7 @@ using WAD.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
-//var connectionString = builder.Configuration.GetConnectionString("BookNGoContextConnection") ?? throw new InvalidOperationException("Connection string 'BookNGoContextConnection' not found.");
 
-//builder.Services.AddDbContext<BookNGoContext>(options =>
-//    options.UseSqlServer(connectionString));;
-
-//builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-//    .AddEntityFrameworkStores<BookNGoContext>();;
 builder.Services.Configure<IdentityOptions>(options =>
 {
     options.Password.RequireDigit = true;
@@ -60,7 +54,7 @@ builder.Services.AddScoped<IBookHotelService, BookHotelService>();
 builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 builder.Services.AddScoped<IReviewService, ReviewService>();
 
-//builder.Services.AddDbContext<BookNGoContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("BookNGoDb")));
+
 
 var app = builder.Build();
 
@@ -76,7 +70,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
-app.UseAuthentication();;
+app.UseAuthentication();
 
 app.UseAuthorization();
 

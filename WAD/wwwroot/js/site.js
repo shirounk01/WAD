@@ -1,22 +1,22 @@
 ﻿$("#flight").click(function () {
-    var x = document.getElementById("searchHotel");
-    var y = document.getElementById("searchFlight");
+    let x = document.getElementById("searchHotel");
+    let y = document.getElementById("searchFlight");
 
     x.style.display = "none";
     y.style.display = "block";
 });
 
 $("#hotel").click(function () {
-    var x = document.getElementById("searchFlight");
-    var y = document.getElementById("searchHotel");
+    let x = document.getElementById("searchFlight");
+    let y = document.getElementById("searchHotel");
 
     x.style.display = "none";
     y.style.display = "block";
 });
 
 $("#showMoreReviews").click(function () {
-    var x = document.getElementById("showMoreReviews");
-    var y = document.getElementById("reviewSection");
+    let x = document.getElementById("showMoreReviews");
+    let y = document.getElementById("reviewSection");
 
     x.style.display = "none";
     y.style.display = "block";

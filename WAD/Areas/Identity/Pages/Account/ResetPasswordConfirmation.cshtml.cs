@@ -20,6 +20,7 @@ namespace WAD.Areas.Identity.Pages.Account
         /// </summary>
         public void OnGet()
         {
+            /// this method is intentionally left empty
         }
     }
 }

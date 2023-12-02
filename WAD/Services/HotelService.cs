@@ -6,7 +6,7 @@ namespace WAD.Services
 {
     public class HotelService : IHotelService
     {
-        private IRepositoryWrapper _repo;
+        private readonly IRepositoryWrapper _repo;
 
         public HotelService(IRepositoryWrapper repo)
         {
@@ -33,7 +33,7 @@ namespace WAD.Services
         public Hotel FindHotelById(int id)
         {
             var hotel = _repo.HotelRepository.FindByCondition(item => item.HotelId == id).FirstOrDefault();
-            return hotel;
+            return hotel!;
         }
 
         public List<Hotel> GetHotelsByModel(Hotel hotel)
@@ -48,7 +48,7 @@ namespace WAD.Services
             foreach (var hotel in bookedHotels)
             {
                 var entry = _repo.HotelRepository.FindByCondition(item => item.HotelId == hotel.HotelId).FirstOrDefault();
-                hotelsHistory.Add(Tuple.Create(hotel, entry));
+                hotelsHistory.Add(Tuple.Create(hotel, entry)!);
             }
             return hotelsHistory;
         }

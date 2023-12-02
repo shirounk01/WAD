@@ -6,7 +6,7 @@ namespace WAD.Services
 {
     public class UserService : IUserService
     {
-        private IRepositoryWrapper _repo;
+        private readonly IRepositoryWrapper _repo;
 
         public UserService(IRepositoryWrapper repo)
         {
@@ -15,9 +15,7 @@ namespace WAD.Services
 
         public List<User> GetUserByName(string name)
         {
-            var users = new List<User>();
-
-            users = _repo.UserRepository.FindByCondition(l => l.FirstName == name).ToList();
+            var users = _repo.UserRepository.FindByCondition(l => l.FirstName == name).ToList();
 
             return users;
         }

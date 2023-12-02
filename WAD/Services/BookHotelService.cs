@@ -6,8 +6,8 @@ namespace WAD.Services
 {
     public class BookHotelService : IBookHotelService
     {
-        private IRepositoryWrapper _repo;
-        private IHotelService _hotelService;
+        private readonly IRepositoryWrapper _repo;
+        private readonly IHotelService _hotelService;
 
         public BookHotelService(IRepositoryWrapper repo, IHotelService hotelService)
         {

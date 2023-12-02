@@ -17,16 +17,14 @@ namespace WAD.Controllers
     [Authorize]
     public class UserController : Controller
     {
-        private readonly ILogger<UserController> _logger;
         private readonly IBookFlightService _bookFlightService;
         private readonly IBookHotelService _bookHotelService;
         private readonly IFlightService _flightService;
         private readonly IHotelService _hotelService;
         private readonly UserManager<IdentityUser> _userManager;
 
-        public UserController(ILogger<UserController> logger, IBookFlightService bookFlightService, IBookHotelService bookHotelService, IFlightService flightService, IHotelService hotelService, UserManager<IdentityUser> userManager)
+        public UserController(IBookFlightService bookFlightService, IBookHotelService bookHotelService, IFlightService flightService, IHotelService hotelService, UserManager<IdentityUser> userManager)
         {
-            _logger = logger;
             _bookFlightService = bookFlightService;
             _bookHotelService = bookHotelService;
             _flightService = flightService;

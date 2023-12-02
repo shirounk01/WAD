@@ -6,7 +6,7 @@ namespace WAD.Services
 {
     public class ReviewService : IReviewService
     {
-        private IRepositoryWrapper _repo;
+        private readonly IRepositoryWrapper _repo;
 
         public ReviewService(IRepositoryWrapper repo)
         {
@@ -20,7 +20,7 @@ namespace WAD.Services
             review.UserGuid = userGuid;
             review.Created = DateTime.Now;
             _repo.ReviewRepository.Create(review);
-            _repo.HotelRepository.Update(hotel);
+            _repo.HotelRepository.Update(hotel!);
             _repo.Save();
         }
 
