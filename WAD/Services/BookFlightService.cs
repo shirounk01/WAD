@@ -17,15 +17,20 @@ namespace WAD.Services
 
         public void BookFlight(string userGuid, Flight flight)
         {
-            
-            BookFlight bookFlight = new BookFlight();
-            bookFlight.Flight = flight;
-            bookFlight.UserGuid = userGuid;
-            bookFlight.RegistrationDate = DateTime.Now;
+            BookFlight bookFlight = BuildNewBookFlight(userGuid, flight);
 
             _repo.FlightRepository.Update(flight);
             _repo.BookFlightRepository.Create(bookFlight);
 
+        }
+
+        private static BookFlight BuildNewBookFlight(string userGuid, Flight flight)
+        {
+            BookFlight bookFlight = new BookFlight();
+            bookFlight.Flight = flight;
+            bookFlight.UserGuid = userGuid;
+            bookFlight.RegistrationDate = DateTime.Now;
+            return bookFlight;
         }
 
         public void BookFlights(int goingId, int comingId, string userGuid)

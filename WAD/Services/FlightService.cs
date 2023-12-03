@@ -19,6 +19,21 @@ namespace WAD.Services
             _repo.Save();
         }
 
+        public void DeleteFlightById(int id)
+        {
+            var flight = _repo.FlightRepository.FindByCondition(item => item.FlightId == id).FirstOrDefault()!;
+            _repo.FlightRepository.Delete(flight);
+            _repo.Save();
+        }
+
+        public void UpdateFlightPriceById(int id, int price)
+        {
+            var flight = _repo.FlightRepository.FindByCondition(item => item.FlightId == id).FirstOrDefault()!;
+            flight.Price = price;
+            _repo.FlightRepository.Update(flight);
+            _repo.Save();
+        }
+
         public bool CheckTime(Flight flight, Time time)
         {
             bool result = false;
@@ -45,6 +60,12 @@ namespace WAD.Services
         public Flight GetFlightById(int id)
         {
             var flight = _repo.FlightRepository.FindByCondition(item => item.FlightId == id).FirstOrDefault();
+            return flight!;
+        }
+
+        public Flight GetFlightByDestination(string destination)
+        {
+            var flight = _repo.FlightRepository.FindByCondition(item => item.ArrivalCity == destination).FirstOrDefault();
             return flight!;
         }
 

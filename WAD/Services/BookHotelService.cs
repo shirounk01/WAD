@@ -18,7 +18,16 @@ namespace WAD.Services
         public void BookHotel(int id, string userGuid, Hotel reference)
         {
             Hotel hotel = _hotelService.FindHotelById(id);
+            BookHotel bookHotel = BuildNewBookHotel(userGuid, reference, hotel);
 
+            _repo.HotelRepository.Update(hotel);
+            _repo.BookHotelRepository.Create(bookHotel);
+
+            _repo.Save();
+        }
+
+        private static BookHotel BuildNewBookHotel(string userGuid, Hotel reference, Hotel hotel)
+        {
             BookHotel bookHotel = new BookHotel();
             bookHotel.UserGuid = userGuid;
             bookHotel.Hotel = hotel;
@@ -26,11 +35,7 @@ namespace WAD.Services
             bookHotel.CheckInDate = reference.OpenDate;
             bookHotel.CheckOutDate = reference.CloseDate;
             bookHotel.Price = hotel.Price * ((int)(reference.CloseDate - reference.OpenDate).TotalDays);
-
-            _repo.HotelRepository.Update(hotel);
-            _repo.BookHotelRepository.Create(bookHotel);
-
-            _repo.Save();
+            return bookHotel;
         }
 
         public List<BookHotel> GetReservationsByUserId(string userGuid)
