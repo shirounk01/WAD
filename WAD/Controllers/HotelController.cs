@@ -15,26 +15,33 @@ namespace WAD.Controllers
         public readonly IReviewService _reviewService;
 		private readonly UserManager<IdentityUser> _userManager;
 
-		public HotelController(IHotelService hotelService, IBookHotelService bookHotelService, IReviewService reviewService, UserManager<IdentityUser> userManager)
+        private readonly IHTTPClientService _clientService;
+
+
+		public HotelController(IHotelService hotelService, IBookHotelService bookHotelService, IReviewService reviewService, UserManager<IdentityUser> userManager, IHTTPClientService clientService)
         {
             _hotelService = hotelService;
             _bookHotelService = bookHotelService;
             _reviewService = reviewService;
 			_userManager = userManager;
+            _clientService = clientService;
 		}
 
-        public IActionResult Index(Hotel hotel)
+        public async Task<IActionResult> Index(Hotel hotel)
         {
-            var results = _hotelService.GetHotelsByModel(hotel);
+            var results = await _clientService.GetHotelsByModel(hotel);
+
+            //var results = _hotelService.GetHotelsByModel(hotel);
             TempData["HotelPacks"] = JsonConvert.SerializeObject(results);
             TempData["HotelModel"] = JsonConvert.SerializeObject(hotel);
             return View(results);
         }
         [HttpPost]
-        public IActionResult Index([FromForm] Filter filter)
+        public async Task<IActionResult> Index([FromForm] Filter filter)
         {
             var hotels = JsonConvert.DeserializeObject<List<Hotel>>(TempData["HotelPacks"]!.ToString()!);
-            hotels = _hotelService.FilterHotels(filter, hotels!);
+            //hotels = _hotelService.FilterHotels(filter, hotels!);
+            hotels = await _clientService.FilterHotels(filter, hotels);
             TempData["HotelPacks"] = JsonConvert.SerializeObject(hotels);
             return View(hotels);
         }

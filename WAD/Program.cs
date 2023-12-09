@@ -54,6 +54,8 @@ builder.Services.AddScoped<IBookHotelService, BookHotelService>();
 builder.Services.AddScoped<IReviewRepository, ReviewRepository>();
 builder.Services.AddScoped<IReviewService, ReviewService>();
 
+builder.Services.AddScoped<IHTTPClientService, HTTPClientService>();
+
 
 
 var app = builder.Build();
