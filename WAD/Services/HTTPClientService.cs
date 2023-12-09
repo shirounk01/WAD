@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Web;
 using WAD.Models;
+using WAD.Models.DTOs;
 using WAD.Services.Interfaces;
 
 namespace WAD.Services
@@ -44,6 +45,23 @@ namespace WAD.Services
             queryString = queryString.Replace("None", "0");
 
             return "?" + queryString;
+        }
+
+        public async Task<dynamic> GetFlightsByInfo(FlightInfo flightInfo)
+        {
+            var res = await _client.PostAsJsonAsync(_endpointBase + "Flight", flightInfo);
+            var content = await res.Content.ReadAsStringAsync();
+            var dataObj = JsonConvert.DeserializeObject<dynamic>(content);
+            return dataObj;
+        }
+
+        public async Task<List<FlightPack>> FilterFlights(Filter filter, List<FlightPack> flights)
+        {
+            var queryString = ToQueryString(filter);
+            var res = await _client.PostAsJsonAsync(_endpointBase + "Flight/Filter" + queryString, flights);
+            var content = await res.Content.ReadAsStringAsync();
+            var dataObj = JsonConvert.DeserializeObject<List<FlightPack>>(content);
+            return dataObj;
         }
     }
 }

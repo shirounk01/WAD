@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using WAD.Models;
+using WAD.Models.DTOs;
 using WAD.Services.Interfaces;
 using WAD.ViewModels;
 
@@ -15,30 +16,38 @@ namespace WAD.Controllers
         private readonly IBookFlightService _bookFlightService;
         private readonly UserManager<IdentityUser> _userManager;
 
-        public FlightController(IFlightService flightService, IFlightPackService flightPackService, IBookFlightService bookFlightService, UserManager<IdentityUser> userManager)
+        private readonly IHTTPClientService _clientService;
+
+        public FlightController(IFlightService flightService, IFlightPackService flightPackService, IBookFlightService bookFlightService, UserManager<IdentityUser> userManager, IHTTPClientService clientService)
         {
             _flightService = flightService;
             _flightPackService = flightPackService;
             _bookFlightService = bookFlightService;
             _userManager = userManager;
+            _clientService = clientService;
         }
 
-        public IActionResult Index(Flight flight)
+        public async Task<IActionResult> Index(FlightInfo flightInfo)
         {
-            var reference = flight;
-            List<Flight> flightsGoing = _flightService.GetFlightsByModel(reference);
-            reference = _flightService.SwapRoute(reference);
-            List<Flight> flightsComing = _flightService.GetFlightsByModel(reference);
-            var flightPacks = _flightPackService.GeneratePack(flightsGoing, flightsComing);
+            //var reference = flight;
+            //List<Flight> flightsGoing = _flightService.GetFlightsByModel(reference);
+            //reference = _flightService.SwapRoute(reference);
+            //List<Flight> flightsComing = _flightService.GetFlightsByModel(reference);
+            //var flightPacks = _flightPackService.GeneratePack(flightsGoing, flightsComing);
+            var results = await _clientService.GetFlightsByInfo(flightInfo);
+            var flight = JsonConvert.DeserializeObject<Flight>(results.flight.ToString());
+            var flightPacks = JsonConvert.DeserializeObject<List<FlightPack>>(results.flightPack.ToString());
             TempData["FlightPacks"] = JsonConvert.SerializeObject(flightPacks);
             TempData["FlightModel"] = JsonConvert.SerializeObject(flight);
             return View(flightPacks);
         }
         [HttpPost]
-        public IActionResult Index([FromForm] Filter filter)
+        public async Task<IActionResult> Index([FromForm] Filter filter)
         {
             var flights = JsonConvert.DeserializeObject<List<FlightPack>>(TempData["FlightPacks"]!.ToString()!);
-            flights = _flightPackService.FilterFlights(filter, flights!);
+
+            //flights = _flightPackService.FilterFlights(filter, flights!);
+            flights = await _clientService.FilterFlights(filter, flights);
             TempData["FlightPacks"] = JsonConvert.SerializeObject(flights);
             return View(flights);
         }
