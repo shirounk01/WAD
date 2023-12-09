@@ -20,6 +20,20 @@
 				<img src="~/img/logo.png" alt="logo" class="logo">
 				Book n Go
 			</a>
+			@*<span></span>
+			<ul class="navbar-nav">
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+						   data-bs-toggle="dropdown" aria-expanded="false">
+
+							Change currency (@ViewBag.Currency)
+						</a>
+						<ul class="dropdown-menu">
+							<li><a class="dropdown-item" asp-controller="Home" asp-action="Currency">Profile</a></li>
+							<li><a class="dropdown-item" asp-controller="Home" asp-action="Currency">Profile</a></li>
+						</ul>
+					</li>
+			</ul>*@
 			<span></span>
 			<div>
 				<ul class="navbar-nav">
@@ -66,8 +80,13 @@
 	<script src="~/lib/jquery/dist/jquery.min.js"></script>
 	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 	<script src="~/js/site.js" asp-append-version="true"></script>
-
-
+	<script>
+        // Add a click event listener to the link
+        document.getElementById('redirectLink').addEventListener('click', function() {
+            // Set the new URL to the controller action
+            window.location.href = '@Url.Action("Index", "Home")'; // Replace with your controller and action names
+        });
+    </script>
 	@await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

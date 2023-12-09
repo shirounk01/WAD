@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Web;
 using WAD.Models;
 using WAD.Models.DTOs;
@@ -61,6 +62,21 @@ namespace WAD.Services
             var res = await _client.PostAsJsonAsync(_endpointBase + "Flight/Filter" + queryString, flights);
             var content = await res.Content.ReadAsStringAsync();
             var dataObj = JsonConvert.DeserializeObject<List<FlightPack>>(content);
+            return dataObj;
+        }
+
+        public async Task<int> GetRates(string currency)
+        {
+            var res = await _client.GetAsync(string.Format(_config["API:Currency"], currency));
+            var content = await res.Content.ReadAsStringAsync();
+            var json = JsonConvert.DeserializeObject(content).ToString();
+
+            JObject jsonObj = JObject.Parse((string)json);
+            JObject ratesObj = (JObject)jsonObj["rates"];
+
+            var dataObj = (int)((double)ratesObj[currency] * 100);
+
+
             return dataObj;
         }
     }

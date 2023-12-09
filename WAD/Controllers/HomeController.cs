@@ -7,8 +7,17 @@ namespace WAD.Controllers
 {
     public class HomeController : Controller
     {
+        readonly IConfiguration _config;
+
+        public HomeController(IConfiguration config)
+        {
+            _config = config;
+        }
+
         public IActionResult Index()
         {
+            var y = "RON";
+            var x = _config.GetSection($"CurrencySymbol:{y}").Get<string>();
             return View();
         }
         [HttpPost]
