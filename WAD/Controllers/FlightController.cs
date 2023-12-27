@@ -57,11 +57,11 @@ namespace WAD.Controllers
             var flight = JsonConvert.DeserializeObject<Flight>(TempData["FlightModel"]!.ToString()!);
             return RedirectToAction("Index", flight);
         }
-        [Authorize]
-        public IActionResult BookFlight(int goingId, int comingId)
+        public async Task<IActionResult> BookFlight(int goingId, int comingId)
         {
-            string userGuid = _userManager.GetUserId(HttpContext.User);
-            _bookFlightService.BookFlights(goingId, comingId, userGuid);
+            //string userGuid = _userManager.GetUserId(HttpContext.User);
+            //_bookFlightService.BookFlights(goingId, comingId, userGuid);
+            await _clientService.BookFlight(goingId, comingId);
             return RedirectToAction("ResetIndex");
         }
         [Authorize(Roles = "Admin")]

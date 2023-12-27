@@ -14,5 +14,6 @@ namespace WAD.Services.Interfaces
         Task BookHotel(int id, Hotel hotel);
         Task<dynamic> Review(int id);
         Task AddReview(int id, Review review);
+        Task BookFlight(int goingId, int comingId);
     }
 }

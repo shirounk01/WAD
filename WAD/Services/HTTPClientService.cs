@@ -117,5 +117,12 @@ namespace WAD.Services
             var content = await res.Content.ReadAsStringAsync();
             return;
         }
+
+        public async Task BookFlight(int goingId, int comingId)
+        {
+            _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _context.HttpContext.Session.GetString("token"));
+            var res = await _client.PostAsync(_endpointBase + $"Flight/Book/{goingId}-{comingId}", null);
+            return;
+        }
     }
 }
