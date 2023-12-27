@@ -45,21 +45,32 @@ namespace WAD.Controllers
         {
             var token = await _clientService.Login(userInfo);
             HttpContext.Session.SetString("token", token);
-            
+
+            return RedirectToAction("Index", "Home");
+        }
+        public IActionResult Register()
+        {
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> Register(User user)
+        {
+            UserInfo userInfo = new UserInfo { Email = user.Email, Password = user.Password };
+            var token = await _clientService.Register(userInfo);
+            HttpContext.Session.SetString("token", token);
             return RedirectToAction("Index", "Home");
         }
 
-        public IActionResult Profile()
+        public async Task<IActionResult> Profile()
         {
-            var userGuid = _userManager.GetUserId(HttpContext.User);
-            var bookedHotels = _bookHotelService.GetReservationsByUserId(userGuid);
-            var bookedFlights = _bookFlightService.GetReservationsByUserId(userGuid);
-            List<Tuple<BookHotel, Hotel>> hotelHistory = _hotelService.GetHotelsByReservations(bookedHotels);
-            List<Tuple<BookFlight, Flight>> flightHistory = _flightService.GetHotelsByReservations(bookedFlights);
-            History history = new History();
-            history.Hotels = hotelHistory;
-            history.Flights = flightHistory;
+            History history = await _clientService.GetHistory();
             return View(history);
+        }
+
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Remove("token");
+            return RedirectToAction("Index", "Home");
         }
     }
 }

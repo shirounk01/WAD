@@ -1,5 +1,6 @@
 ﻿using WAD.Models;
 using WAD.Models.DTOs;
+using WAD.ViewModels;
 
 namespace WAD.Services.Interfaces
 {
@@ -15,5 +16,7 @@ namespace WAD.Services.Interfaces
         Task<dynamic> Review(int id);
         Task AddReview(int id, Review review);
         Task BookFlight(int goingId, int comingId);
+        Task<History> GetHistory();
+        Task<string> Register(UserInfo userInfo);
     }
 }

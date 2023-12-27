@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="utf-8" />
@@ -41,27 +44,25 @@
 						<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
 						   data-bs-toggle="dropdown" aria-expanded="false">
 
-							@if (!User.Identity.IsAuthenticated)
+							@if (string.IsNullOrEmpty(HttpContextAccessor.HttpContext.Session.GetString("token")))
 							{
 								<span>New user</span>
 							}
 							else
 							{
-								<span>@User.Identity.Name</span>
+								<span>Welcome!</span>
 							}
 						</a>
 
 						<ul class="dropdown-menu">
-							@if (User.Identity.IsAuthenticated)
+							@if (!string.IsNullOrEmpty(HttpContextAccessor.HttpContext.Session.GetString("token")))
 							{
 								<li><a class="dropdown-item" asp-controller="User" asp-action="Profile">Profile</a></li>
 								<li>
 									<hr class="dropdown-divider">
 								</li>
 								<li>
-									<form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-										<button id="logout" type="submit" class="dropdown-item text-danger">Logout</button>
-									</form>
+									<a class="dropdown-item text-danger" asp-controller="User" asp-action="Logout">Logout</a>
 								</li>
 							}
 							else
@@ -69,7 +70,7 @@
 								@*<li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Login">Sign in</a></li>
 								<li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Register">Sign up</a></li>*@
 								<li><a class="dropdown-item" asp-controller="User" asp-action="Login">Sign in a</a></li>
-								<li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Register">Sign up</a></li>
+								<li><a class="dropdown-item" asp-controller="User" asp-action="Register">Sign up</a></li>
 							}
 						</ul>
 					</li>

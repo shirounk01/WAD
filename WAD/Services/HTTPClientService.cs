@@ -4,6 +4,7 @@ using System.Web;
 using WAD.Models;
 using WAD.Models.DTOs;
 using WAD.Services.Interfaces;
+using WAD.ViewModels;
 
 namespace WAD.Services
 {
@@ -123,6 +124,23 @@ namespace WAD.Services
             _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _context.HttpContext.Session.GetString("token"));
             var res = await _client.PostAsync(_endpointBase + $"Flight/Book/{goingId}-{comingId}", null);
             return;
+        }
+
+        public async Task<History> GetHistory()
+        {
+            _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _context.HttpContext.Session.GetString("token"));
+            var res = await _client.GetAsync(_endpointBase + $"User/Profile");
+
+            var content = await res.Content.ReadAsStringAsync();
+            var dataObj = JsonConvert.DeserializeObject<History>(content);
+            return dataObj;
+        }
+
+        public async Task<string> Register(UserInfo userInfo)
+        {
+            var res = await _client.PostAsJsonAsync(_endpointBase + $"User/Register", userInfo);
+            var content = await res.Content.ReadAsStringAsync();
+            return content;
         }
     }
 }
