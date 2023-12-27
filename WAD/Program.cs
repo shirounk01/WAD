@@ -31,6 +31,15 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
     .AddEntityFrameworkStores<BookNGoContext>();
 builder.Services.AddDbContext<BookNGoContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("BookNGoDb")));
 
+builder.Services.AddDistributedMemoryCache();
+
+// This was missing:
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromSeconds(10);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 
 builder.Services.AddScoped<IRepositoryWrapper, RepositoryWrapper>();
 
@@ -75,6 +84,8 @@ app.UseRouting();
 app.UseAuthentication();
 
 app.UseAuthorization();
+
+app.UseSession();
 
 app.MapControllerRoute(
     name: "default",

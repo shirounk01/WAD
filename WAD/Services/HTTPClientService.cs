@@ -12,12 +12,14 @@ namespace WAD.Services
         private readonly HttpClient _client;
         private readonly IConfiguration _config;
         private readonly string _endpointBase;
+        private readonly IHttpContextAccessor _context;
 
-        public HTTPClientService(IConfiguration config)
+        public HTTPClientService(IConfiguration config, IHttpContextAccessor context)
         {
             _client = new HttpClient();
             _config = config;
             _endpointBase = _config["API:Local"];
+            _context = context;
         }
 
         public async Task<List<Hotel>> GetHotelsByModel(Hotel hotel)
@@ -78,6 +80,24 @@ namespace WAD.Services
 
 
             return dataObj;
+        }
+
+        public async Task<string> Login(UserInfo userInfo)
+        {
+            var res = await _client.PostAsJsonAsync(_endpointBase + "User/Login", userInfo);
+            var content = await res.Content.ReadAsStringAsync();
+
+            return content;
+        }
+
+
+        public async Task BookHotel(int id, Hotel hotel)
+        {
+            var hotelInfo = new { OpenDate = hotel.OpenDate, CloseDate = hotel.CloseDate };
+            _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _context.HttpContext.Session.GetString("token"));
+
+            var res = await _client.PostAsJsonAsync(_endpointBase + $"Hotel/Book/{id}", hotelInfo);
+            return;
         }
     }
 }

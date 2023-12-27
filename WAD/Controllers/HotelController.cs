@@ -79,12 +79,13 @@ namespace WAD.Controllers
             TempData["HotelModel"] = JsonConvert.SerializeObject(hotel);
             return RedirectToAction("Index", hotel);
         }
-        [Authorize]
-        public IActionResult BookHotel(int id)
+
+        public async Task<IActionResult> BookHotel(int id)
         {
             var hotel = JsonConvert.DeserializeObject<Hotel>(TempData["HotelModel"]!.ToString()!);
-            string userGuid = _userManager.GetUserId(HttpContext.User);
-            _bookHotelService.BookHotel(id, userGuid, hotel!);
+            //string userGuid = _userManager.GetUserId(HttpContext.User);
+            //_bookHotelService.BookHotel(id, userGuid, hotel!);
+            await _clientService.BookHotel(id, hotel!);
             return RedirectToAction("Index", hotel);
         }
 

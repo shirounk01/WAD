@@ -16,8 +16,7 @@ namespace WAD.Controllers
 
         public IActionResult Index()
         {
-            var y = "RON";
-            var x = _config.GetSection($"CurrencySymbol:{y}").Get<string>();
+            Console.WriteLine(HttpContext.Session.GetString("token"));
             return View();
         }
         [HttpPost]
