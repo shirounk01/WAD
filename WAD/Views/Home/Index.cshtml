@@ -1,7 +1,26 @@
 ﻿@model Flight
-
+﻿@using Microsoft.AspNetCore.Http
+@using System.IdentityModel.Tokens.Jwt
+@inject IHttpContextAccessor HttpContextAccessor
 @{
 	ViewData["Title"] = "Home Page";
+	bool isAdmin = false;
+	string token = HttpContextAccessor.HttpContext.Session.GetString("token");
+	if (!string.IsNullOrEmpty(token))
+	{
+		Console.WriteLine("aaa");
+		var handler = new JwtSecurityTokenHandler();
+		var jsonToken = handler.ReadToken(token) as JwtSecurityToken;
+		var role = jsonToken.Claims.FirstOrDefault(claim => claim.Type.Contains("role"))?.Value;
+		Console.WriteLine(role);
+		isAdmin = role == "Admin" ? true : false;
+	}
+	else
+	{
+		
+	Console.WriteLine("bbb");
+		isAdmin = false;
+	}
 }
 <head>
 	<title>Home Page</title>
@@ -115,8 +134,11 @@
 	</div>
 </div>
 
-@if(User.IsInRole("Admin"))
+
+@if(isAdmin == true)
 {
 	<a asp-action="Create" asp-controller="Flight" class="btn btn-primary position-fixed end-10 bottom-10">add flight</a>
+	
 }
+
 <script src="~/lib/jquery/dist/jquery.min.js"></script>

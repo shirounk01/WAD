@@ -142,5 +142,12 @@ namespace WAD.Services
             var content = await res.Content.ReadAsStringAsync();
             return content;
         }
+
+        public async Task AddFlight(Flight flight)
+        {
+            _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _context.HttpContext.Session.GetString("token"));
+            var res = await _client.PostAsJsonAsync(_endpointBase + "Flight/Create", flight);
+            return;
+        }
     }
 }

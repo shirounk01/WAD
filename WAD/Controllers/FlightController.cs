@@ -64,16 +64,15 @@ namespace WAD.Controllers
             await _clientService.BookFlight(goingId, comingId);
             return RedirectToAction("ResetIndex");
         }
-        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();
         }
-        [Authorize(Roles = "Admin")]
         [HttpPost]
-        public IActionResult Create([FromForm] Flight flight)
+        public async Task<IActionResult> Create([FromForm] Flight flight)
         {
-            _flightService.AddFlights(flight);
+            //_flightService.AddFlights(flight);
+            await _clientService.AddFlight(flight);
             return RedirectToAction("Index", "Home");
         }
     }

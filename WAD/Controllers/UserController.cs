@@ -22,18 +22,18 @@ namespace WAD.Controllers
         private readonly IBookHotelService _bookHotelService;
         private readonly IFlightService _flightService;
         private readonly IHotelService _hotelService;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly IUserService _userService;
 
         private readonly IHTTPClientService _clientService;
 
 
-        public UserController(IBookFlightService bookFlightService, IBookHotelService bookHotelService, IFlightService flightService, IHotelService hotelService, UserManager<IdentityUser> userManager, IHTTPClientService clientService)
+        public UserController(IBookFlightService bookFlightService, IBookHotelService bookHotelService, IFlightService flightService, IHotelService hotelService, IUserService userService, IHTTPClientService clientService)
         {
             _bookFlightService = bookFlightService;
             _bookHotelService = bookHotelService;
             _flightService = flightService;
             _hotelService = hotelService;
-            _userManager = userManager;
+            _userService = userService;
             _clientService = clientService;
         }
         public IActionResult Login()

@@ -18,5 +18,6 @@ namespace WAD.Services.Interfaces
         Task BookFlight(int goingId, int comingId);
         Task<History> GetHistory();
         Task<string> Register(UserInfo userInfo);
+        Task AddFlight(Flight flight);
     }
 }
