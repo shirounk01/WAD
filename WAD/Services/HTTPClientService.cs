@@ -99,5 +99,23 @@ namespace WAD.Services
             var res = await _client.PostAsJsonAsync(_endpointBase + $"Hotel/Book/{id}", hotelInfo);
             return;
         }
+
+        public async Task<dynamic> Review(int id)
+        {
+            var res = await _client.GetAsync(_endpointBase + $"Hotel/Reviews/{id}");
+            var content = await res.Content.ReadAsStringAsync();
+            var dataObj = JsonConvert.DeserializeObject<dynamic>(content);
+            return dataObj;
+
+        }
+
+        public async Task AddReview(int id, Review review)
+        {
+            var reviewInfo = new { Rating = review.Rating, Comment = review.Comment, Created = review.Created };
+            _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _context.HttpContext.Session.GetString("token"));
+            var res = await _client.PostAsJsonAsync(_endpointBase + $"Hotel/Reviews/Post/{id}", reviewInfo);
+            var content = await res.Content.ReadAsStringAsync();
+            return;
+        }
     }
 }

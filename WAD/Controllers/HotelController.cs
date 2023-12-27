@@ -89,20 +89,23 @@ namespace WAD.Controllers
             return RedirectToAction("Index", hotel);
         }
 
-        public IActionResult Review(int id)
+        public async Task<IActionResult> Review(int id)
         {
-            Hotel hotel = _hotelService.FindHotelById(id);
-            List<Review> reviews = _reviewService.FindReviewsByHotelId(id);
-            Reviews viewReviews = new Reviews { Hotel = hotel, Posts = reviews, Review = new Review() };
+            //Hotel hotel = _hotelService.FindHotelById(id);
+            //List<Review> reviews = _reviewService.FindReviewsByHotelId(id);
+            var dataObj = await _clientService.Review(id);
+            var hotel = JsonConvert.DeserializeObject<Hotel>(dataObj.hotel.ToString());
+            var posts = JsonConvert.DeserializeObject<List<Review>>(dataObj.posts.ToString());
+            Reviews viewReviews = new Reviews { Hotel = hotel, Posts = posts, Review = new Review() };
 
             return View(viewReviews);
         }
         [HttpPost]
-        [Authorize]
-        public IActionResult Review([FromForm] Review review, int id)
+        public async Task<IActionResult> Review([FromForm] Review review, int id)
         {
-            string userGuid = _userManager.GetUserId(HttpContext.User);
-            _reviewService.AddReview(review, id, userGuid);
+            //string userGuid = _userManager.GetUserId(HttpContext.User);
+            //_reviewService.AddReview(review, id, userGuid);
+            await _clientService.AddReview(id, review);
             return RedirectToAction("Review", id);
         }
     }

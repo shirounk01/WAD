@@ -12,5 +12,7 @@ namespace WAD.Services.Interfaces
         Task<int> GetRates(string currency);
         Task<string> Login(UserInfo userInfo);
         Task BookHotel(int id, Hotel hotel);
+        Task<dynamic> Review(int id);
+        Task AddReview(int id, Review review);
     }
 }
