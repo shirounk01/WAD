@@ -4,6 +4,9 @@
 @{
 	ViewData["Title"] = "Flights";
 	FlightPack pack = Model.FirstOrDefault();
+
+	var currency = ViewBag.Currency;
+	var multiplier = ViewBag.Multiplier;
 }
 
 <div class="d-flex justify-content-center center-div flex-wrap border-0 p-0">
@@ -37,7 +40,7 @@
 		<div class="form-group">
 		</div>
 		<div class="btn-group col-12 mt-4">
-			<button type="submit" value="submit" name="submit" formmethod="post" class="btn btn-outline-primary">
+			<button id="filter-submit" formaction="/Flight/Index?currency=USD&multiplier=1.00" type="submit" value="submit" name="submit" formmethod="post" class="btn btn-outline-primary">
 				<i class="bi bi-funnel"></i>
 				Apply filters
 			</button>
@@ -61,7 +64,7 @@
 						<div>
 							<p class="time-interval">@Convert.ToDateTime(flight.FlightGoing.DepartureTime).ToString("hh:mm tt") - @Convert.ToDateTime(flight.FlightGoing.ArrivalTime).ToString("hh:mm tt")</p>
 							<p class="nonaccent">@Html.DisplayFor(flightItem => flight.FlightGoing.DepartureCity) (@Html.DisplayFor(flightItem => flight.FlightGoing.DepartureAirport)) - @Html.DisplayFor(flightItem => flight.FlightGoing.ArrivalCity) (@Html.DisplayFor(flightItem => flight.FlightGoing.ArrivalAirport))</p>
-							<p class="time-interval">$@Html.DisplayFor(flightItem => flight.FlightGoing.Price)</p>
+							<p class="price-item time-interval">USD @Html.DisplayFor(flightItem => flight.FlightGoing.Price).00</p>
 						</div>
 						<div>
 							<h2><i class="bi bi-arrow-left-right"></i></h2>
@@ -69,10 +72,10 @@
 						<div>
 							<p class="time-interval">@Convert.ToDateTime(flight.FlightComing.DepartureTime).ToString("hh:mm tt") - @Convert.ToDateTime(flight.FlightComing.ArrivalTime).ToString("hh:mm tt")</p>
 							<p class="nonaccent">@Html.DisplayFor(flightItem => flight.FlightComing.DepartureCity) (@Html.DisplayFor(flightItem => flight.FlightComing.DepartureAirport)) - @Html.DisplayFor(flightItem => flight.FlightComing.ArrivalCity) (@Html.DisplayFor(flightItem => flight.FlightComing.ArrivalAirport))</p>
-							<p class="time-interval">$@Html.DisplayFor(flightItem => flight.FlightComing.Price)</p>
+							<p  class="price-item time-interval">USD @Html.DisplayFor(flightItem => flight.FlightComing.Price).00</p>
 						</div>
 					</div>
-					<div class="price position-absolute bottom-10 start-10">$@Html.DisplayFor(flightItem => flight.Price)</div>
+					<div class="price position-absolute bottom-10 start-10 price-item">USD @Html.DisplayFor(flightItem => flight.Price).00</div>
 					<div class="position-absolute bottom-10 end-10">
 						<a asp-action="BookFlight" asp-controller="Flight" asp-route-goingId=@flight.FlightGoing.FlightId asp-route-comingId=@flight.FlightComing.FlightId type="submit" class="btn btn-outline-primary">
 							<i class="bi bi-bookmark-check"></i> Buy tickets
@@ -84,3 +87,76 @@
 	</div>
 
 </div>
+
+<script>
+
+	var pastCurrency = '@ViewBag.Currency';
+	var pastMultiplier = '@ViewBag.Multiplier';
+
+	var filterBtn = document.getElementById("filter-submit");
+	var currencyDropdown = document.getElementById("currency-dropdown");
+
+	if(pastCurrency != ""){
+		changePrices(pastCurrency, pastMultiplier);
+		changeFilterButton(pastCurrency, pastMultiplier);
+	}
+	
+	var currentCurrency = pastCurrency == "" ? "USD" : pastCurrency;
+	currencyDropdown.textContent = pastCurrency == "" ? "USD" : pastCurrency;
+	console.log(">>>", currentCurrency)
+	document.getElementById("currency-selection").addEventListener("click", function(event) {
+		if (event.target.classList.contains("currency-select")) {
+
+			var currency = event.target.getAttribute("name");
+			var apiUrl = 'https://openexchangerates.org/api/latest.json?app_id=8c6c1dacc56f41b0a813bb5fae8205e0&symbols='+currency+','+currentCurrency;
+			fetch(apiUrl)
+				.then(response => {
+				if (!response.ok) {
+					throw new Error("Network response was not ok");
+				}
+				return response.json();
+				})
+				.then(data => {
+
+					console.log(currentCurrency, "--->", currency)
+
+					currencyDropdown.textContent = currency;
+
+				var currentMultiplier = parseFloat(data['rates'][currentCurrency]).toFixed(2);
+				var upcomingMultiplier = parseFloat(data['rates'][currency]).toFixed(2);
+				var multiplier = upcomingMultiplier/currentMultiplier;
+				currentCurrency = currency;
+
+				changePrices(currency, multiplier);
+
+				changeFilterButton(currency, upcomingMultiplier);
+
+				})
+				.catch(error => {
+				console.error("Error fetching data:", error);
+				});
+		}	
+	})
+
+	function changePrices(currency, multiplier){
+		var priceItems = document.getElementsByClassName("price-item");
+		for (var i = 0; i < priceItems.length; i++) {
+			var currentItem = priceItems[i].textContent;
+			currentItem = currentItem.split(" ");
+			currentItem[0] = currency;
+			currentItem[1] = Number(parseFloat(currentItem[1]) * multiplier).toFixed(2);
+			priceItems[i].textContent = currentItem.join(" ");
+		}
+	}
+
+	function changeFilterButton(currency, multiplier){
+		var formactionString = filterBtn.getAttribute("formaction");
+		formactionString = formactionString.split("?");
+		formactionString[1] = 'currency='+currency+'&multiplier='+multiplier;
+		formactionString = formactionString.join("?");
+		filterBtn.setAttribute("formaction", formactionString);
+	}
+
+	// Iterate over all elements
+	
+</script>

@@ -42,13 +42,16 @@ namespace WAD.Controllers
             return View(flightPacks);
         }
         [HttpPost]
-        public async Task<IActionResult> Index([FromForm] Filter filter)
+        public async Task<IActionResult> Index([FromForm] Filter filter, float multiplier, string currency)
         {
             var flights = JsonConvert.DeserializeObject<List<FlightPack>>(TempData["FlightPacks"]!.ToString()!);
-
+            filter.MinPrice = (int)(filter.MinPrice / multiplier);
+            filter.MaxPrice = (int)(filter.MaxPrice / multiplier);
             //flights = _flightPackService.FilterFlights(filter, flights!);
             flights = await _clientService.FilterFlights(filter, flights);
             TempData["FlightPacks"] = JsonConvert.SerializeObject(flights);
+            ViewBag.Currency = currency;
+            ViewBag.Multiplier = multiplier;
             return View(flights);
         }
 
