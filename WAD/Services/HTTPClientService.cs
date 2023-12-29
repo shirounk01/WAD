@@ -68,20 +68,20 @@ namespace WAD.Services
             return dataObj;
         }
 
-        public async Task<int> GetRates(string currency)
-        {
-            var res = await _client.GetAsync(string.Format(_config["API:Currency"], currency));
-            var content = await res.Content.ReadAsStringAsync();
-            var json = JsonConvert.DeserializeObject(content).ToString();
+        //public async Task<int> GetRates(string currency)
+        //{
+        //    var res = await _client.GetAsync(string.Format(_config["API:Currency"], currency));
+        //    var content = await res.Content.ReadAsStringAsync();
+        //    var json = JsonConvert.DeserializeObject(content).ToString();
 
-            JObject jsonObj = JObject.Parse((string)json);
-            JObject ratesObj = (JObject)jsonObj["rates"];
+        //    JObject jsonObj = JObject.Parse((string)json);
+        //    JObject ratesObj = (JObject)jsonObj["rates"];
 
-            var dataObj = (int)((double)ratesObj[currency] * 100);
+        //    var dataObj = (int)((double)ratesObj[currency] * 100);
 
 
-            return dataObj;
-        }
+        //    return dataObj;
+        //}
 
         public async Task<string> Login(UserInfo userInfo)
         {

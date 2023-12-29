@@ -6,10 +6,10 @@
 
 <div class="d-flex justify-content-center center-div flex-wrap border-0 p-0">
 	<form class="col-md-4 filter-div bg-light">
-		<div class="form-group">
+		@*<div class="form-group">
 			<select name="currency" asp-items="Html.GetEnumSelectList<Currency>()" class="form-select">
 			</select>
-		</div>
+		</div>*@
 		<h4>Sort by</h4>
 		<h6>Price</h6>
 		<div class="form-group">
@@ -54,7 +54,7 @@
 					<h4>@Html.DisplayFor(hotelItem => hotel.Name)</h4>
 					<p class="nonaccent">@Html.DisplayFor(hotelItem => hotel.City)</p>
 					<p class="nonaccent">@Html.DisplayFor(hotelItem => hotel.Address)</p>
-					<div class="price price position-absolute bottom-10 start-10">@TempData["CurrencySymbol"]@((hotel.Price/100.0M).ToString("N2"))</div>
+					<div class="price price position-absolute bottom-10 start-10">@Html.DisplayFor(hotelItem => hotel.Price).00</div>
 					<div class="position-absolute bottom-10 end-10">
 						<a asp-action="BookHotel" asp-controller="Hotel" asp-route-id=@hotel.HotelId type="submit" class="btn btn-outline-primary">
 							<i class="bi bi-bookmark-check"></i> Book room

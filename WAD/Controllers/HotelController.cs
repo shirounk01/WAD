@@ -32,44 +32,44 @@ namespace WAD.Controllers
         public async Task<IActionResult> Index(Hotel hotel)
         {
             var results = await _clientService.GetHotelsByModel(hotel);
-            foreach (var result in results)
-            {
-                result.Price *= 100;
-            }
-            //var results = _hotelService.GetHotelsByModel(hotel);
-            TempData["CurrencyRatio"] = 100;
-            TempData["CurrencySymbol"] = "S";
+            //foreach (var result in results)
+            //{
+            //    result.Price *= 100;
+            //}
+            ////var results = _hotelService.GetHotelsByModel(hotel);
+            //TempData["CurrencyRatio"] = 100;
+            //TempData["CurrencySymbol"] = "S";
             TempData["HotelPacks"] = JsonConvert.SerializeObject(results);
             TempData["HotelModel"] = JsonConvert.SerializeObject(hotel);
-            TempData["LastRate"] = "S";
+            //TempData["LastRate"] = "S";
             return View(results);
         }
         [HttpPost]
         public async Task<IActionResult> Index([FromForm] Filter filter)
         {
             var hotels = JsonConvert.DeserializeObject<List<Hotel>>(TempData["HotelPacks"]!.ToString()!);
-            filter.MinPrice *= 100;
-            filter.MaxPrice *= 100;
+            //filter.MinPrice *= 100;
+            //filter.MaxPrice *= 100;
             //hotels = _hotelService.FilterHotels(filter, hotels!);
             hotels = await _clientService.FilterHotels(filter, hotels);
-            if (filter.currency != Currency.None)
-            {
-                var currencyRatio = JsonConvert.DeserializeObject<int>(TempData["CurrencyRatio"].ToString());
-                var newCurrencyRation = await _clientService.GetRates(filter.currency.ToString());
-                foreach (var hotel in hotels)
-                {
-                    hotel.Price = (int)(hotel.Price / currencyRatio * newCurrencyRation);
-                }
-                TempData["CurrencyRatio"] = newCurrencyRation;
-                TempData["LastRate"] = _config.GetSection($"CurrencySymbol:{filter.currency.ToString()}").Get<string>();
-                TempData["CurrencySymbol"] = _config.GetSection($"CurrencySymbol:{filter.currency.ToString()}").Get<string>();
-            }
-            else
-            {
-                var lastRate = TempData["LastRate"];
-                TempData["CurrencySymbol"] = lastRate;
-                TempData["LastRate"] = lastRate;
-            }
+            //if (filter.currency != Currency.None)
+            //{
+            //    var currencyRatio = JsonConvert.DeserializeObject<int>(TempData["CurrencyRatio"].ToString());
+            //    var newCurrencyRation = await _clientService.GetRates(filter.currency.ToString());
+            //    foreach (var hotel in hotels)
+            //    {
+            //        hotel.Price = (int)(hotel.Price / currencyRatio * newCurrencyRation);
+            //    }
+            //    TempData["CurrencyRatio"] = newCurrencyRation;
+            //    TempData["LastRate"] = _config.GetSection($"CurrencySymbol:{filter.currency.ToString()}").Get<string>();
+            //    TempData["CurrencySymbol"] = _config.GetSection($"CurrencySymbol:{filter.currency.ToString()}").Get<string>();
+            //}
+            //else
+            //{
+            //    var lastRate = TempData["LastRate"];
+            //    TempData["CurrencySymbol"] = lastRate;
+            //    TempData["LastRate"] = lastRate;
+            //}
             TempData["HotelPacks"] = JsonConvert.SerializeObject(hotels);
             return View(hotels);
         }
