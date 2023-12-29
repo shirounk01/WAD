@@ -66,7 +66,17 @@ namespace WAD.Controllers
         {
             //string userGuid = _userManager.GetUserId(HttpContext.User);
             //_bookFlightService.BookFlights(goingId, comingId, userGuid);
-            await _clientService.BookFlight(goingId, comingId);
+            var response = await _clientService.BookFlight(goingId, comingId);
+            if (response == 200)
+            {
+                ViewBag.Message = "Your flight reservations were registered successfully!";
+                ViewBag.Color = "success";
+            }
+            else
+            {
+                ViewBag.Message = "There was an error while processing your registration! Please try again later!";
+                ViewBag.Color = "danger";
+            }
             return View("~/Views/Home/Confirmation.cshtml");
         }
         public IActionResult Create()

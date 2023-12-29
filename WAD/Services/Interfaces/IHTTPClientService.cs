@@ -12,10 +12,10 @@ namespace WAD.Services.Interfaces
         Task<List<FlightPack>> FilterFlights(Filter filter, List<FlightPack> flights);
         //Task<int> GetRates(string currency);
         Task<string> Login(UserInfo userInfo);
-        Task BookHotel(int id, Hotel hotel);
+        Task<int> BookHotel(int id, Hotel hotel);
         Task<dynamic> Review(int id);
         Task AddReview(int id, Review review);
-        Task BookFlight(int goingId, int comingId);
+        Task<int> BookFlight(int goingId, int comingId);
         Task<History> GetHistory();
         Task<string> Register(UserInfo userInfo);
         Task AddFlight(Flight flight);

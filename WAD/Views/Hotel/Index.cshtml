@@ -74,6 +74,8 @@
 </div>
 
 <script>
+	document.getElementById("exchange").classList.remove("d-none");
+
 	var pastCurrency = '@HttpContextAccessor.HttpContext.Session.GetString("currency")';
 	var pastMultiplier = '@HttpContextAccessor.HttpContext.Session.GetString("multiplier")';
 	console.log("+++",pastCurrency, pastMultiplier);

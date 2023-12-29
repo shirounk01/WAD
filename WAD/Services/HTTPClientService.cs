@@ -92,13 +92,13 @@ namespace WAD.Services
         }
 
 
-        public async Task BookHotel(int id, Hotel hotel)
+        public async Task<int> BookHotel(int id, Hotel hotel)
         {
             var hotelInfo = new { OpenDate = hotel.OpenDate, CloseDate = hotel.CloseDate };
             _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _context.HttpContext.Session.GetString("token"));
 
             var res = await _client.PostAsJsonAsync(_endpointBase + $"Hotel/Book/{id}", hotelInfo);
-            return;
+            return (int)res.StatusCode;
         }
 
         public async Task<dynamic> Review(int id)
@@ -119,11 +119,11 @@ namespace WAD.Services
             return;
         }
 
-        public async Task BookFlight(int goingId, int comingId)
+        public async Task<int> BookFlight(int goingId, int comingId)
         {
             _client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _context.HttpContext.Session.GetString("token"));
             var res = await _client.PostAsync(_endpointBase + $"Flight/Book/{goingId}-{comingId}", null);
-            return;
+            return (int)res.StatusCode;
         }
 
         public async Task<History> GetHistory()

@@ -2,4 +2,8 @@
 	ViewData["Title"] = "Confirmation";
 }
 
-yay
+<div class="bg-@ViewBag.Color border-@ViewBag.Color text-center center-div" style="--bs-bg-opacity: .25;">
+	<div class="h5 mb-3">@ViewBag.Message </div>
+	<a class="btn btn-outline-@ViewBag.Color" asp-controller="Home" asp-action="Index">Return home</a>
+	
+</div>

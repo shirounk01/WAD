@@ -89,8 +89,19 @@ namespace WAD.Controllers
             var hotel = JsonConvert.DeserializeObject<Hotel>(TempData["HotelModel"]!.ToString()!);
             //string userGuid = _userManager.GetUserId(HttpContext.User);
             //_bookHotelService.BookHotel(id, userGuid, hotel!);
-            await _clientService.BookHotel(id, hotel!);
-            return RedirectToAction("Index", hotel);
+            var response = await _clientService.BookHotel(id, hotel!);
+            if (response == 200)
+            {
+                ViewBag.Message = "Your hotel reservation was registered successfully!";
+                ViewBag.Color = "success";
+            }
+            else
+            {
+                ViewBag.Message = "There was an error while processing your registration! Please try again later!";
+                ViewBag.Color = "danger";
+            }
+            return View("~/Views/Home/Confirmation.cshtml");
+            //return RedirectToAction("Index", hotel);
         }
 
         public async Task<IActionResult> Review(int id)
