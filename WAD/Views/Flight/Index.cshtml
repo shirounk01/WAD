@@ -1,12 +1,9 @@
 ﻿@model IEnumerable<FlightPack>
-
+@inject IHttpContextAccessor HttpContextAccessor
 
 @{
 	ViewData["Title"] = "Flights";
 	FlightPack pack = Model.FirstOrDefault();
-
-	var currency = ViewBag.Currency;
-	var multiplier = ViewBag.Multiplier;
 }
 
 <div class="d-flex justify-content-center center-div flex-wrap border-0 p-0">
@@ -89,9 +86,8 @@
 </div>
 
 <script>
-
-	var pastCurrency = '@ViewBag.Currency';
-	var pastMultiplier = '@ViewBag.Multiplier';
+	var pastCurrency = '@HttpContextAccessor.HttpContext.Session.GetString("currency")';
+	var pastMultiplier = '@HttpContextAccessor.HttpContext.Session.GetString("multiplier")';
 
 	var filterBtn = document.getElementById("filter-submit");
 	var currencyDropdown = document.getElementById("currency-dropdown");

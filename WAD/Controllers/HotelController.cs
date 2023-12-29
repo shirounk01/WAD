@@ -45,13 +45,17 @@ namespace WAD.Controllers
             return View(results);
         }
         [HttpPost]
-        public async Task<IActionResult> Index([FromForm] Filter filter)
+        public async Task<IActionResult> Index([FromForm] Filter filter, float multiplier, string currency)
         {
             var hotels = JsonConvert.DeserializeObject<List<Hotel>>(TempData["HotelPacks"]!.ToString()!);
             //filter.MinPrice *= 100;
             //filter.MaxPrice *= 100;
             //hotels = _hotelService.FilterHotels(filter, hotels!);
+            filter.MinPrice = (int)(filter.MinPrice / multiplier);
+            filter.MaxPrice = (int)(filter.MaxPrice / multiplier);
             hotels = await _clientService.FilterHotels(filter, hotels);
+            HttpContext.Session.SetString("currency", currency);
+            HttpContext.Session.SetString("multiplier", multiplier.ToString());
             //if (filter.currency != Currency.None)
             //{
             //    var currencyRatio = JsonConvert.DeserializeObject<int>(TempData["CurrencyRatio"].ToString());

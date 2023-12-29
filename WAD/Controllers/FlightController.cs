@@ -50,8 +50,10 @@ namespace WAD.Controllers
             //flights = _flightPackService.FilterFlights(filter, flights!);
             flights = await _clientService.FilterFlights(filter, flights);
             TempData["FlightPacks"] = JsonConvert.SerializeObject(flights);
-            ViewBag.Currency = currency;
-            ViewBag.Multiplier = multiplier;
+            //ViewBag.Currency = currency;
+            //ViewBag.Multiplier = multiplier;
+            HttpContext.Session.SetString("currency", currency);
+            HttpContext.Session.SetString("multiplier", multiplier.ToString());
             return View(flights);
         }
 
@@ -65,7 +67,7 @@ namespace WAD.Controllers
             //string userGuid = _userManager.GetUserId(HttpContext.User);
             //_bookFlightService.BookFlights(goingId, comingId, userGuid);
             await _clientService.BookFlight(goingId, comingId);
-            return RedirectToAction("ResetIndex");
+            return View("~/Views/Home/Confirmation.cshtml");
         }
         public IActionResult Create()
         {

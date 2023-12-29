@@ -1,4 +1,5 @@
 ﻿@model WAD.ViewModels.History
+@inject IHttpContextAccessor HttpContextAccessor
 
 @{
 	ViewData["Title"] = "Profile";
@@ -19,10 +20,10 @@
 	<table summary="flight-history" class="table table-hover table-striped">
 		<thead>
 			<tr>
-				<th scope="col">From</th>
-				<th scope="col">To</th>
-				<th scope="col">Price</th>
-				<th scope="col">Booking date</th>
+				<th class="col-4" scope="col">From</th>
+				<th class="col-4" scope="col">To</th>
+				<th class="col-2" scope="col">Price</th>
+				<th class="col-2" scope="col">Booking date</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -31,7 +32,7 @@
 				<tr>
 					<td>@Html.DisplayFor(flightItem => flight.Item2.DepartureCity)</td>
 					<td>@Html.DisplayFor(flightItem => flight.Item2.ArrivalCity)</td>
-					<td>$@Html.DisplayFor(flightItem => flight.Item2.Price)</td>
+					<td class="price-item">USD @Html.DisplayFor(flightItem => flight.Item2.Price).00</td>
 					<td>@Convert.ToDateTime(flight.Item1.RegistrationDate).ToString("dd MMMM yyyy")</td>
 				</tr>
 			}
@@ -43,10 +44,10 @@
 	<table summary="accommodations-history" class="table table-hover table-striped">
 		<thead>
 			<tr>
-				<th scope="col">Name</th>
-				<th scope="col">Location</th>
-				<th scope="col">Price</th>
-				<th scope="col">Booking date</th>
+				<th class="col-5" scope="col">Name</th>
+				<th class="col-3" scope="col">Location</th>
+				<th class="col-2" scope="col">Price</th>
+				<th class="col-2" scope="col">Booking date</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -55,7 +56,7 @@
 				<tr>
 					<td>@Html.DisplayFor(hotelItem => hotel.Item2.Name)</td>
 					<td>@Html.DisplayFor(hotelItem => hotel.Item2.City)</td>
-					<td>$@Html.DisplayFor(hotelItem => hotel.Item2.Price)</td>
+					<td class="price-item">USD @Html.DisplayFor(hotelItem => hotel.Item2.Price).00</td>
 					<td>@Convert.ToDateTime(hotel.Item1.RegistrationDate).ToString("dd MMMM yyyy")</td>
 				</tr>
 			}
@@ -64,3 +65,75 @@
 		</tbody>
 	</table>
 </div>
+
+<script>
+	var pastCurrency = '@HttpContextAccessor.HttpContext.Session.GetString("currency")';
+	var pastMultiplier = '@HttpContextAccessor.HttpContext.Session.GetString("multiplier")';
+
+	//var filterBtn = document.getElementById("filter-submit");
+	var currencyDropdown = document.getElementById("currency-dropdown");
+
+	if(pastCurrency != ""){
+		changePrices(pastCurrency, pastMultiplier);
+		//changeFilterButton(pastCurrency, pastMultiplier);
+	}
+	
+	var currentCurrency = pastCurrency == "" ? "USD" : pastCurrency;
+	currencyDropdown.textContent = pastCurrency == "" ? "USD" : pastCurrency;
+	console.log(">>>", currentCurrency)
+	document.getElementById("currency-selection").addEventListener("click", function(event) {
+		if (event.target.classList.contains("currency-select")) {
+
+			var currency = event.target.getAttribute("name");
+			var apiUrl = 'https://openexchangerates.org/api/latest.json?app_id=8c6c1dacc56f41b0a813bb5fae8205e0&symbols='+currency+','+currentCurrency;
+			fetch(apiUrl)
+				.then(response => {
+				if (!response.ok) {
+					throw new Error("Network response was not ok");
+				}
+				return response.json();
+				})
+				.then(data => {
+
+					console.log(currentCurrency, "--->", currency)
+
+					currencyDropdown.textContent = currency;
+
+				var currentMultiplier = parseFloat(data['rates'][currentCurrency]).toFixed(2);
+				var upcomingMultiplier = parseFloat(data['rates'][currency]).toFixed(2);
+				var multiplier = upcomingMultiplier/currentMultiplier;
+				currentCurrency = currency;
+
+				changePrices(currency, multiplier);
+
+				changeFilterButton(currency, upcomingMultiplier);
+
+				})
+				.catch(error => {
+				console.error("Error fetching data:", error);
+				});
+		}	
+	})
+
+	function changePrices(currency, multiplier){
+		var priceItems = document.getElementsByClassName("price-item");
+		for (var i = 0; i < priceItems.length; i++) {
+			var currentItem = priceItems[i].textContent;
+			currentItem = currentItem.split(" ");
+			currentItem[0] = currency;
+			currentItem[1] = Number(parseFloat(currentItem[1]) * multiplier).toFixed(2);
+			priceItems[i].textContent = currentItem.join(" ");
+		}
+	}
+
+	function changeFilterButton(currency, multiplier){
+		var formactionString = filterBtn.getAttribute("formaction");
+		formactionString = formactionString.split("?");
+		formactionString[1] = 'currency='+currency+'&multiplier='+multiplier;
+		formactionString = formactionString.join("?");
+		filterBtn.setAttribute("formaction", formactionString);
+	}
+
+	// Iterate over all elements
+	
+</script>
