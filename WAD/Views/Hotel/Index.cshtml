@@ -40,11 +40,14 @@
 			</a>
 		</div>
 
-		<hr class="my-4"/>
+		<hr class="my-3"/>
 
+		<h4>News ⎯ <span id="city-name"></span></h4>
 		<div class="news-div bg-white">
 		
-		<img id="news-image" src="" class="w-100"/>
+		<div class="news-image-wrapper">
+			<img id="news-image" src="" class="h-100 w-100"/>
+		</div>
 		<div class="m-2 lh-sm "><h5><a class="text-decoration-none text-dark" id="news-title" href="" target="blank"></a></h5></div>
 		<div class="m-2 lh-1 nonaccent" id="news-description"></div>
 		<div class="d-flex justify-content-around">
@@ -93,9 +96,10 @@
 	
 	var news;
 	var newsIndex = 0;
-	var city = document.getElementById("city").textContent.toLowerCase();
+	var city = document.getElementById("city").textContent;
+	document.getElementById("city-name").textContent = city;
 	// Specify the URL of the API you want to fetch data from
-	const url = 'https://newsapi.org/v2/everything?q='+city+'+travel&apiKey=2c04979a7936442883e7ba181bf937b7&language=en';
+	const url = 'https://newsapi.org/v2/everything?q='+city.toLowerCase()+'+travel&apiKey=2c04979a7936442883e7ba181bf937b7&language=en';
 
 	// Use the fetch function to make a GET request to the specified URL
 	fetch(url)

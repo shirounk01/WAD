@@ -22,17 +22,25 @@
 }
 
 #news-description:hover, #news-title:hover{
+    height: auto;
     overflow: visible;
     text-overflow: clip;
     display: -webkit-flex
 }
 
 #news-description {
+    height: 3em;
     -webkit-line-clamp: 3;
 }
 
 #news-title {
+    height: 2.4em;
     -webkit-line-clamp: 2;
+}
+
+.news-image-wrapper{
+    aspect-ratio: 16/9;
+    overflow: hidden;
 }
 
 .news-button {

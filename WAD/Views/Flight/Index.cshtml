@@ -46,6 +46,23 @@
 				Reset filters
 			</a>
 		</div>
+
+		
+		<hr class="my-3"/>
+
+		<h4>News ⎯ <span id="city-name"></span></h4>
+		<div class="news-div bg-white">
+
+		<div class="news-image-wrapper">
+			<img id="news-image" src="" class="h-100 w-100"/>
+		</div>
+		<div class="m-2 lh-sm "><h5><a class="text-decoration-none text-dark" id="news-title" href="" target="blank"></a></h5></div>
+		<div class="m-2 lh-1 nonaccent" id="news-description"></div>
+		<div class="d-flex justify-content-around">
+			<h5 id="left-btn" class="m-0 border-top rounded-bl news-button bi bi-arrow-left-circle col-md-6"></h5>
+			<h5 id="right-btn" class="m-0 border-top rounded-br news-button bi bi-arrow-right-circle col-md-6"></h5>
+		</div>
+		</div>
 	</form>
 
 	<div class="col-md-8 result-div">
@@ -68,7 +85,7 @@
 						</div>
 						<div>
 							<p class="time-interval">@Convert.ToDateTime(flight.FlightComing.DepartureTime).ToString("hh:mm tt") - @Convert.ToDateTime(flight.FlightComing.ArrivalTime).ToString("hh:mm tt")</p>
-							<p class="nonaccent">@Html.DisplayFor(flightItem => flight.FlightComing.DepartureCity) (@Html.DisplayFor(flightItem => flight.FlightComing.DepartureAirport)) - @Html.DisplayFor(flightItem => flight.FlightComing.ArrivalCity) (@Html.DisplayFor(flightItem => flight.FlightComing.ArrivalAirport))</p>
+							<p id="city" class="nonaccent">@Html.DisplayFor(flightItem => flight.FlightComing.DepartureCity) (@Html.DisplayFor(flightItem => flight.FlightComing.DepartureAirport)) - @Html.DisplayFor(flightItem => flight.FlightComing.ArrivalCity) (@Html.DisplayFor(flightItem => flight.FlightComing.ArrivalAirport))</p>
 							<p  class="price-item time-interval">USD @Html.DisplayFor(flightItem => flight.FlightComing.Price).00</p>
 						</div>
 					</div>
@@ -84,6 +101,67 @@
 	</div>
 
 </div>
+
+<script>
+	
+	var news;
+	var newsIndex = 0;
+	// Specify the URL of the API you want to fetch data from
+	var city = document.getElementById("city").textContent.split(" ")[0];
+	document.getElementById("city-name").textContent = city;
+	// Specify the URL of the API you want to fetch data from
+	const url = 'https://newsapi.org/v2/everything?q='+city.toLowerCase()+'+travel&apiKey=2c04979a7936442883e7ba181bf937b7&language=en';
+	// Use the fetch function to make a GET request to the specified URL
+	fetch(url)
+	  .then(response => {
+		// Check if the request was successful (status code 200-299)
+		if (!response.ok) {
+		  throw new Error(`Network response was not ok: ${response.statusText}`);
+		}
+    
+		// Parse the JSON response
+		return response.json();
+	  })
+	  .then(data => {
+		// Handle the data
+		var unmappedData = data.articles.slice(0,3);
+		news = unmappedData.map(item => {
+			return {
+				title: item.title,
+				description: item.description,
+				url: item.url,
+				image: item.urlToImage
+			}
+		})
+		changeNews()
+	  })
+	  .catch(error => {
+		// Handle errors
+		console.error('Error fetching data:', error);
+	  });
+	  document.getElementById("left-btn").addEventListener("click", function(){
+		  changeNews("-")
+	  })
+	  document.getElementById("right-btn").addEventListener("click", function(){
+		  changeNews("+")
+	  })
+	  function changeNews(op){
+		  switch(op){
+			  case "+":
+					newsIndex = newsIndex >= news.length - 1 ? 0 : newsIndex+1;
+					break;
+			  case "-":
+					newsIndex = newsIndex <= 0 ? news.length - 1 : newsIndex-1;
+					break;
+		  }
+		  document.getElementById("news-image").setAttribute("src", news[newsIndex].image);
+		  document.getElementById("news-title").textContent = news[newsIndex].title;
+		  document.getElementById("news-title").setAttribute("href", news[newsIndex].url);
+		  document.getElementById("news-description").textContent = news[newsIndex].description;
+		  
+		  
+	  }
+</script>
 
 <script>
 	document.getElementById("exchange").classList.remove("d-none");
