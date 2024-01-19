@@ -106,24 +106,18 @@
 	
 	var news;
 	var newsIndex = 0;
-	// Specify the URL of the API you want to fetch data from
 	var city = document.getElementById("city").textContent.split(" ")[0];
 	document.getElementById("city-name").textContent = city;
-	// Specify the URL of the API you want to fetch data from
 	const url = 'https://newsapi.org/v2/everything?q='+city.toLowerCase()+'+travel&apiKey=2c04979a7936442883e7ba181bf937b7&language=en';
-	// Use the fetch function to make a GET request to the specified URL
 	fetch(url)
 	  .then(response => {
-		// Check if the request was successful (status code 200-299)
 		if (!response.ok) {
 		  throw new Error(`Network response was not ok: ${response.statusText}`);
 		}
     
-		// Parse the JSON response
 		return response.json();
 	  })
 	  .then(data => {
-		// Handle the data
 		var unmappedData = data.articles.slice(0,3);
 		news = unmappedData.map(item => {
 			return {
@@ -136,7 +130,6 @@
 		changeNews()
 	  })
 	  .catch(error => {
-		// Handle errors
 		console.error('Error fetching data:', error);
 	  });
 	  document.getElementById("left-btn").addEventListener("click", function(){
